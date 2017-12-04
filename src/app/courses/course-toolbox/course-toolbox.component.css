@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  width: 100%;
+}
+
+input {
+  width: 200px;
+}
+
+.add-course input {
+  width: 150px;
+}
+
+.find-course {
+ flex: 1;
+}
+
+.find-course input[type="button"] {
+  width: 100px;
+}

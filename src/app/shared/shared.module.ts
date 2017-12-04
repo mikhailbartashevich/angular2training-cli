@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
     CommonModule
   ],
   declarations: [SharedFooterComponent, SharedHeaderComponent, TimePipe],
-  providers: [AuthService]
+  providers: [AuthService],
+  exports: [SharedFooterComponent, SharedHeaderComponent, TimePipe]
 })
 export class SharedModule { }

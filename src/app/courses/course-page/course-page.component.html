@@ -1,3 +1,7 @@
-<p>
-  course-page works!
-</p>
+<div class="container">
+  <app-shared-header></app-shared-header>
+  <app-course-toolbox></app-course-toolbox>
+  <app-course-list [courses]="courses" (deleteCourse)="onDeleteCourse($event)"></app-course-list>
+  <app-shared-footer></app-shared-footer>
+</div>
+

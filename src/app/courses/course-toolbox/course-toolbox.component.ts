@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-course-toolbox',
   templateUrl: './course-toolbox.component.html',
   styleUrls: ['./course-toolbox.component.css']
 })
-export class CourseToolboxComponent implements OnInit {
+export class CourseToolboxComponent {
 
-  constructor() { }
+  private searchField_: string;
 
-  ngOnInit() {
+  // TODO: form onsubmit
+  public onFindButtonClick() {
+    console.log(this.searchField_);
   }
 
 }

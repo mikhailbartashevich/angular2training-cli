@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../user.model';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-shared-header',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SharedHeaderComponent implements OnInit {
 
-  constructor() { }
+  public user: User;
 
-  ngOnInit() {
+  constructor(private authService: AuthService) {}
+
+  public ngOnInit() {
+    this.user = this.authService.getUserInfo();
+  }
+
+  public onLogoffClick() {
+    this.authService.logout();
+    location.href = location.host;
   }
 
 }

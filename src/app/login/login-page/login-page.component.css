@@ -1,0 +1,30 @@
+.container {
+  padding: 20px;
+}
+
+app-shared-footer {
+  bottom: 20px;
+  margin: 0 auto;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}
+
+app-shared-header {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.login-form {
+  margin: 0 auto;
+  width: 420px;
+}
+
+.login-form div {
+  margin-bottom: 20px;
+}
+
+.login-form input, .login-form label  {
+  display: inline-block;
+  width: 200px;
+}

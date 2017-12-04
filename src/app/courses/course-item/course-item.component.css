@@ -1,0 +1,28 @@
+.container, .header {
+  display: flex;
+}
+
+.container {
+  border: 1px solid black;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.content {
+  flex: 1;
+}
+.title {
+  flex: 1;
+}
+
+.duration {
+  flex: 3;
+}
+
+.date {
+  flex: 1;
+}
+
+.button-bar input {
+  width: 100px;
+}

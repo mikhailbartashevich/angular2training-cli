@@ -1,0 +1,14 @@
+html, body, app {
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+courses-page {
+  display: block;
+  height: 100%;
+}
+
+a.active {
+  background-color: gray;
+}

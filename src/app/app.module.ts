@@ -1,11 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { RouterModule, PreloadAllModules } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginModule } from './login/login.module';
 import { CoursesModule } from './courses/courses.module';
+import { LoginPageComponent } from './login/login-page/login-page.component';
+import { CoursePageComponent } from './courses/course-page/course-page.component';
+import { SharedModule } from './shared/shared.module';
 
+const Routes = [
+  {path: '', component: LoginPageComponent},
+  {path: 'courses', component: CoursePageComponent},
+  {path: 'login', component: LoginPageComponent},
+];
 
 @NgModule({
   declarations: [
@@ -13,8 +21,13 @@ import { CoursesModule } from './courses/courses.module';
   ],
   imports: [
     BrowserModule,
+    RouterModule.forRoot(Routes, {
+      useHash: Boolean(history.pushState) === false,
+      preloadingStrategy: PreloadAllModules
+    }),
     LoginModule,
-    CoursesModule
+    CoursesModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

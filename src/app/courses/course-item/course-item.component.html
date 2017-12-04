@@ -1,3 +1,22 @@
-<p>
-  course-item works!
-</p>
+<div class="container">
+  <div class="content">
+      <div class="header">
+          <div class="title">{{courseDetails.title}}</div>
+          <div class="duration">{{courseDetails.duration_ms | coursesTimeMsPipe}}</div>
+          <div class="date">{{courseDetails.creation_date_ms | date : 'dd/MM/yyyy'}}</div>
+      </div>
+
+      <div>
+          {{courseDetails.description}}
+      </div>
+  </div>
+
+  <div class="button-bar">
+      <div>
+          <input type="button" value="Edit course"/>
+      </div>
+      <div>
+          <input type="button" value="Delete course" (click)="onDeleteCourseButtonClick()"/>
+      </div>
+  </div>
+</div>

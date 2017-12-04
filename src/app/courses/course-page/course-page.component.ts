@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CoursesService } from '../courses.service';
+import { CourseDetails } from '../course-details.model';
 
 @Component({
   selector: 'app-course-page',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoursePageComponent implements OnInit {
 
-  constructor() { }
+  public courses: CourseDetails[];
 
-  ngOnInit() {
+  constructor(private coursesService: CoursesService) {}
+
+  public ngOnInit() {
+    this.courses = this.coursesService.getList();
+  }
+
+  public onDeleteCourse(course: CourseDetails) {
+    this.courses = this.coursesService.removeCourse(course);
   }
 
 }
