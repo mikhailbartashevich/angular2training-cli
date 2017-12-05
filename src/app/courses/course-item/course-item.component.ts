@@ -1,21 +1,29 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CourseDetails } from '../course-details.model';
+import { MatDialog } from '@angular/material';
+import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @Component({
   selector: 'app-course-item',
   templateUrl: './course-item.component.html',
   styleUrls: ['./course-item.component.css']
 })
-export class CourseItemComponent implements OnInit {
+export class CourseItemComponent {
   @Input() public courseDetails: CourseDetails;
   @Output() public deleteCourse = new EventEmitter<CourseDetails>();
 
-  public ngOnInit() {
-    console.log('hello `Course item` ');
-  }
+  constructor(public dialog: MatDialog) {}
 
   public onDeleteCourseButtonClick() {
-    this.deleteCourse.emit(this.courseDetails);
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '600px',
+      data: this.courseDetails
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result === 'Confirm') {
+        this.deleteCourse.emit(this.courseDetails);
+      }
+    });
   }
 
 }
