@@ -22,7 +22,7 @@ export class CoursesService {
       title: 'Second course',
       description: 'Second description',
       durationMs: 110000,
-      creationDateMs: 1511188015987,
+      creationDateMs: 1513013411287,
       topRated: true
     });
 

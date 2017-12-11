@@ -3,7 +3,7 @@
   
     <app-course-item
         class="app-course-item"
-        *ngFor="let item of courses; trackBy: trackByCourseId" 
+        *ngFor="let item of courses | orderBy; trackBy: trackByCourseId" 
         [courseDetails]="item" 
         (deleteCourse)="onDeleteCourse($event)"></app-course-item>
   </div>

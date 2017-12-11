@@ -15,6 +15,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CoursesService } from './courses.service';
 import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { DynamicBorderDirective } from './directives/dynamic-border.directive';
+import { OrderByPipe } from './pipes/order-by.pipe';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { DynamicBorderDirective } from './directives/dynamic-border.directive';
     CoursePageComponent,
     CourseToolboxComponent,
     DeleteConfirmationDialogComponent,
-    DynamicBorderDirective
+    DynamicBorderDirective,
+    OrderByPipe
   ],
   entryComponents: [DeleteConfirmationDialogComponent],
   providers: [CoursesService]

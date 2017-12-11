@@ -19,7 +19,7 @@ export class DynamicBorderDirective implements OnInit {
     const lastTwoWeeks = new Date();
     lastTwoWeeks.setDate(currentDate.getDate() - 14);
     let color = this.element.nativeElement.style.borderColor;
-    if (createdDate < currentDate && createdDate >= lastTwoWeeks ) {
+    if (createdDate < currentDate && createdDate >= lastTwoWeeks) {
       color = 'green';
     } else if (createdDate > currentDate) {
       color = 'blue';
