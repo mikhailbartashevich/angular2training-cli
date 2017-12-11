@@ -16,6 +16,7 @@ import { CoursesService } from './courses.service';
 import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { DynamicBorderDirective } from './directives/dynamic-border.directive';
 import { OrderByPipe } from './pipes/order-by.pipe';
+import { FilterByTitlePipe } from './pipes/filter-by-title.pipe';
 
 @NgModule({
   imports: [
@@ -34,9 +35,13 @@ import { OrderByPipe } from './pipes/order-by.pipe';
     CourseToolboxComponent,
     DeleteConfirmationDialogComponent,
     DynamicBorderDirective,
-    OrderByPipe
+    OrderByPipe,
+    FilterByTitlePipe
   ],
   entryComponents: [DeleteConfirmationDialogComponent],
-  providers: [CoursesService]
+  providers: [
+    CoursesService,
+    FilterByTitlePipe
+  ]
 })
 export class CoursesModule { }

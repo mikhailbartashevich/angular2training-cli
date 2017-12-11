@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-course-toolbox',
@@ -6,12 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./course-toolbox.component.css']
 })
 export class CourseToolboxComponent {
+  @Output() public findCourse = new EventEmitter<string>();
 
-  private searchField_: string;
+  public searchField: string;
 
-  // TODO: form onsubmit
   public onFindButtonClick() {
-    console.log(this.searchField_);
+    this.findCourse.emit(this.searchField);
   }
 
 }
