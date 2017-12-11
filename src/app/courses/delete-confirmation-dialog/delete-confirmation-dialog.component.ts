@@ -9,7 +9,10 @@ import { CourseDetails } from '../course-details.model';
 })
 export class DeleteConfirmationDialogComponent {
 
-  constructor(public dialogRef: MatDialogRef<DeleteConfirmationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: CourseDetails) { }
+  constructor(
+    public dialogRef: MatDialogRef<DeleteConfirmationDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: CourseDetails
+  ) {}
 
   public onConfirmButtonClick() {
     this.dialogRef.close('Confirm');

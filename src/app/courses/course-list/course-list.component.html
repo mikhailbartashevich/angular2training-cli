@@ -1,6 +1,14 @@
 <div class="container">
-  <app-course-item 
-      *ngFor="let item of courses; trackBy: trackByCourseId" 
-      [courseDetails]="item" 
-      (deleteCourse)="onDeleteCourse($event)"></app-course-item>
+  <div *ngIf="courses.length; else noData">
+    <app-course-item
+        class="app-course-item"
+        *ngFor="let item of courses; trackBy: trackByCourseId" 
+        [courseDetails]="item" 
+        (deleteCourse)="onDeleteCourse($event)"></app-course-item>
+  </div>
+  <ng-template #noData>
+    <div class="no-data">
+      No data. Feel free to add new course.
+    </div>
+  </ng-template>
 </div>

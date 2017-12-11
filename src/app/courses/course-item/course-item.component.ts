@@ -20,7 +20,7 @@ export class CourseItemComponent {
       data: this.courseDetails
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result === 'Confirm') {
+      if (result === 'Confirm') {
         this.deleteCourse.emit(this.courseDetails);
       }
     });

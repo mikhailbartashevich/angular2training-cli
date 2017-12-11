@@ -1,4 +1,12 @@
-app-course-item {
+.app-course-item {
   display: block;
   margin-bottom: 20px;
+}
+
+.no-data {
+  align-items: center;
+  border: 1px solid black;
+  display: flex;
+  height: 40px;
+  justify-content: center;
 }

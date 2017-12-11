@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatButtonModule, MatCardModule } from '@angular/material';
+import {
+  MatDialogModule,
+  MatButtonModule,
+  MatCardModule,
+  MatIconModule
+} from '@angular/material';
 import { CourseItemComponent } from './course-item/course-item.component';
 import { CourseListComponent } from './course-list/course-list.component';
 import { CoursePageComponent } from './course-page/course-page.component';
@@ -17,7 +22,8 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/
     FormsModule,
     MatDialogModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatIconModule
   ],
   declarations: [
     CourseItemComponent,

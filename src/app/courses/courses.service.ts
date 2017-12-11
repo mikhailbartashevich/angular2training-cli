@@ -12,24 +12,27 @@ export class CoursesService {
       id: 1,
       title: 'First course',
       description: 'First description',
-      duration_ms: 100000,
-      creation_date_ms: 1511188015987,
+      durationMs: 100000,
+      creationDateMs: 1511188015987,
+      topRated: false
     });
 
     this.courses.push({
       id: 2,
       title: 'Second course',
       description: 'Second description',
-      duration_ms: 110000,
-      creation_date_ms: 1511188015987,
+      durationMs: 110000,
+      creationDateMs: 1511188015987,
+      topRated: true
     });
 
     this.courses.push({
       id: 3,
       title: 'Third course',
       description: 'Third description',
-      duration_ms: 120000,
-      creation_date_ms: 1511188015987,
+      durationMs: 120000,
+      creationDateMs: 1511188015987,
+      topRated: false
     });
   }
 

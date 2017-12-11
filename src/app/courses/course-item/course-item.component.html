@@ -1,9 +1,14 @@
-<div class="container">
+<div class="container" [ngClass]="{'top-rated':courseDetails.topRated}">
   <div class="content">
       <div class="header">
           <div class="title">{{courseDetails.title}}</div>
-          <div class="duration">{{courseDetails.duration_ms | coursesTimeMsPipe}}</div>
-          <div class="date">{{courseDetails.creation_date_ms | date : 'dd/MM/yyyy'}}</div>
+          <div class="duration">
+              <div class="time">
+                {{courseDetails.durationMs | coursesTimeMsPipe}}
+              </div>
+              <mat-icon *ngIf="courseDetails.topRated">star</mat-icon>
+            </div>
+          <div class="date">{{courseDetails.creationDateMs | date : 'dd/MM/yyyy'}}</div>
       </div>
 
       <div>

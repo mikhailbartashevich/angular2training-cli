@@ -11,12 +11,19 @@
 .content {
   flex: 1;
 }
+
 .title {
   flex: 1;
 }
 
 .duration {
+  align-items: center;
+  display: flex;
   flex: 3;
+}
+
+.time {
+  margin-right: 10px;
 }
 
 .date {
@@ -25,4 +32,8 @@
 
 .button-bar input {
   width: 100px;
+}
+
+.top-rated {
+  background: lightgreen;
 }
