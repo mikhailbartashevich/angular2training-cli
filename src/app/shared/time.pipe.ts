@@ -14,11 +14,13 @@ export class TimePipe implements PipeTransform {
     const minutes = Math.round((duration / (1000 * 60)) % 60);
     const hours = Math.round((duration / (1000 * 60 * 60)) % 24);
 
-    const hoursString = (hours < 10) ? '0' + hours : hours;
-    const minutesString = (minutes < 10) ? '0' + minutes : minutes;
-    const secondsString = (seconds < 10) ? '0' + seconds : seconds;
-
-    return `${hoursString} : ${minutesString} : ${secondsString}`;
+    if (hours) {
+      return `${hours}h ${minutes}min ${seconds}sec`;
+    } else if (minutes) {
+      return `${minutes}min ${seconds}sec`;
+    } else {
+      return `${seconds}sec`;
+    }
   }
 
 }

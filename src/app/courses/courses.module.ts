@@ -14,6 +14,7 @@ import { CourseToolboxComponent } from './course-toolbox/course-toolbox.componen
 import { SharedModule } from '../shared/shared.module';
 import { CoursesService } from './courses.service';
 import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { DynamicBorderDirective } from './directives/dynamic-border.directive';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/
     CourseListComponent,
     CoursePageComponent,
     CourseToolboxComponent,
-    DeleteConfirmationDialogComponent
+    DeleteConfirmationDialogComponent,
+    DynamicBorderDirective
   ],
   entryComponents: [DeleteConfirmationDialogComponent],
   providers: [CoursesService]

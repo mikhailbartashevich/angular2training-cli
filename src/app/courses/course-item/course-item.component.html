@@ -1,7 +1,12 @@
-<div class="container" [ngClass]="{'top-rated':courseDetails.topRated}">
+<div 
+    class="container" 
+    [ngClass]="{'top-rated':courseDetails.topRated}" 
+    appDynamicBorder 
+    [createdDateMs]="courseDetails.creationDateMs">
+    
   <div class="content">
       <div class="header">
-          <div class="title">{{courseDetails.title}}</div>
+          <div class="title">{{courseDetails.title | uppercase}}</div>
           <div class="duration">
               <div class="time">
                 {{courseDetails.durationMs | coursesTimeMsPipe}}
@@ -24,4 +29,5 @@
           <input type="button" value="Delete course" (click)="onDeleteCourseButtonClick()"/>
       </div>
   </div>
+  
 </div>
