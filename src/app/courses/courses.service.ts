@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CourseDetails } from './course-details.model';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 @Injectable()
 export class CoursesService {
@@ -36,29 +38,29 @@ export class CoursesService {
     });
   }
 
-  public getList(): CourseDetails[] {
-    return this.courses;
+  public getList(): Observable<CourseDetails[]> {
+    return Observable.of(this.courses);
   }
 
-  public createCourse(coursedetails: CourseDetails): CourseDetails[] {
+  public createCourse(coursedetails: CourseDetails): Observable<CourseDetails[]> {
     this.courses.push(coursedetails);
-    return this.courses;
+    return Observable.of(this.courses);
   }
 
-  public updateCourse(coursedetails: CourseDetails): CourseDetails[] {
+  public updateCourse(coursedetails: CourseDetails): Observable<CourseDetails[]> {
     const index = this.courses.findIndex((course) => course.id === coursedetails.id);
     this.courses[index] = coursedetails;
-    return this.courses;
+    return Observable.of(this.courses);
   }
 
-  public removeCourse(coursedetails: CourseDetails): CourseDetails[] {
+  public removeCourse(coursedetails: CourseDetails): Observable<CourseDetails[]> {
     const index = this.courses.findIndex((course) => course.id === coursedetails.id);
     this.courses.splice(index, 1);
-    return this.courses;
+    return Observable.of(this.courses);
   }
 
-  public getCourseById(id: number): CourseDetails {
-    return this.courses.find((courseDetails) => courseDetails.id === id);
+  public getCourseById(id: number): Observable<CourseDetails> {
+    return Observable.of(this.courses.find((courseDetails) => courseDetails.id === id));
   }
 
 }

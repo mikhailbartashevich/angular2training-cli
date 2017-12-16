@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CoursesService } from '../courses.service';
 import { CourseDetails } from '../course-details.model';
 import { FilterByTitlePipe } from '../pipes/filter-by-title.pipe';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/operators/takeUntil'; 
 
 @Component({
   selector: 'app-course-page',
@@ -9,22 +11,36 @@ import { FilterByTitlePipe } from '../pipes/filter-by-title.pipe';
   styleUrls: ['./course-page.component.css'],
   providers: [FilterByTitlePipe]
 })
-export class CoursePageComponent implements OnInit {
+export class CoursePageComponent implements OnInit, OnDestroy {
 
   public courses: CourseDetails[];
+  private subject: Subject<CourseDetails[]> = new Subject();
 
   constructor(private coursesService: CoursesService, private filterByTitlePipe: FilterByTitlePipe) {}
 
   public ngOnInit() {
-    this.courses = this.coursesService.getList();
+    this.coursesService.getList()
+        // .takeUntil(this.subject)
+        .subscribe((courses: CourseDetails[]) => this.courses = courses);
   }
 
   public onDeleteCourse(course: CourseDetails) {
-    this.courses = this.coursesService.removeCourse(course);
+    this.coursesService.removeCourse(course)
+        // .takeUntil(this.subject)
+        .subscribe((courses: CourseDetails[]) => this.courses = courses);
   }
 
   public onFindCourse(title: string) {
-    this.courses = this.filterByTitlePipe.transform(this.coursesService.getList(), title);
+    this.coursesService.getList()
+        // .takeUntil(this.subject)
+        .subscribe((courses: CourseDetails[]) => 
+          this.courses = this.filterByTitlePipe.transform(courses, title) 
+        );
+  }
+
+  public ngOnDestroy() {
+    this.subject.next();
+    this.subject.complete();
   }
 
 }

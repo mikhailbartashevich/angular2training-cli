@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-course-toolbox',
   templateUrl: './course-toolbox.component.html',
-  styleUrls: ['./course-toolbox.component.css']
+  styleUrls: ['./course-toolbox.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseToolboxComponent {
   @Output() public findCourse = new EventEmitter<string>();

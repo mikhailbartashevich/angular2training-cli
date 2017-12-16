@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CourseDetails } from '../course-details.model';
 import { MatDialog } from '@angular/material';
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
@@ -6,7 +6,8 @@ import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog
 @Component({
   selector: 'app-course-item',
   templateUrl: './course-item.component.html',
-  styleUrls: ['./course-item.component.css']
+  styleUrls: ['./course-item.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseItemComponent {
   @Input() public courseDetails: CourseDetails;
