@@ -14,7 +14,7 @@ export class AddCoursePageComponent {
 
   constructor(private router: Router) {}
 
-  public onSaveCourseButtonClick() {}
+  public onSaveButtonClick() {}
 
   public onCancelButtonClick() {
     this.router.navigate(['courses']);
