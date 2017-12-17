@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { CoursesService } from '../courses.service';
 import { CourseDetails } from '../course-details.model';
 import { FilterByTitlePipe } from '../pipes/filter-by-title.pipe';
+import { LoaderBlockService } from '../../shared/loader-block.service';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { from } from 'rxjs/observable/from';
@@ -11,26 +12,45 @@ import { concatMap, filter, takeUntil, toArray } from 'rxjs/operators';
   selector: 'app-course-page',
   templateUrl: './course-page.component.html',
   styleUrls: ['./course-page.component.css'],
-  providers: [FilterByTitlePipe]
+  providers: [FilterByTitlePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoursePageComponent implements OnInit, OnDestroy {
 
   public courses: CourseDetails[];
   private subject: Subject<CourseDetails[]> = new Subject();
 
-  constructor(private coursesService: CoursesService, private filterByTitlePipe: FilterByTitlePipe) {}
+  constructor(
+    private coursesService: CoursesService,
+    private loaderBlockService: LoaderBlockService,
+    private filterByTitlePipe: FilterByTitlePipe,
+    private ngZone: NgZone
+  ) {}
 
   public ngOnInit() {
+    this.ngZone.onUnstable
+        .subscribe(() => console.log('unstable ' + new Date()));
+    this.ngZone.onStable
+        .subscribe(() => console.log('stable ' + new Date()));
+
     this.getUpToDateList()
         .subscribe((courses: CourseDetails[]) => this.courses = courses);
   }
 
   public onDeleteCourse(course: CourseDetails) {
+    this.loaderBlockService.show();
     this.coursesService.removeCourse(course)
         .pipe(
           takeUntil(this.subject)
         )
-        .subscribe((courses: CourseDetails[]) => this.courses = courses);
+        .subscribe(
+          (courses: CourseDetails[]) => {
+            setTimeout(() => {
+              this.courses = courses;
+              this.loaderBlockService.hide();
+            }, 1500);
+          }
+        );
   }
 
   public onFindCourse(title: string) {

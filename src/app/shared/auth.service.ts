@@ -1,23 +1,28 @@
 import { Injectable } from '@angular/core';
 import { User } from './user.model';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class AuthService {
 
+  private userInfo: Subject<User> = new Subject();
+  private user: User;
+
   public login(user: User) {
-    localStorage.setItem('user', JSON.stringify(user));
+    this.user = user;
+    this.userInfo.next(user);
   }
 
   public logout() {
-    localStorage.setItem('user', null);
+    this.userInfo.next(null);
   }
 
-  public isAuthenticated(): boolean {
-    return localStorage.getItem('user') !== null;
+  public getUser() {
+    this.userInfo.next(this.user);
   }
 
-  public getUserInfo(): User {
-    return JSON.parse(localStorage.getItem('user'));
+  public getUserInfo(): Subject<User> {
+    return this.userInfo;
   }
 
 }

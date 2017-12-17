@@ -2,15 +2,27 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedFooterComponent } from './shared-footer/shared-footer.component';
 import { SharedHeaderComponent } from './shared-header/shared-header.component';
+import { SharedLoaderBlockComponent } from './shared-loader-block/shared-loader-block.component';
 import { TimePipe } from './time.pipe';
 import { AuthService } from './auth.service';
+import { LoaderBlockService } from './loader-block.service';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [SharedFooterComponent, SharedHeaderComponent, TimePipe],
-  providers: [AuthService],
-  exports: [SharedFooterComponent, SharedHeaderComponent, TimePipe]
+  declarations: [
+    SharedFooterComponent, 
+    SharedHeaderComponent, 
+    SharedLoaderBlockComponent,
+    TimePipe
+  ],
+  providers: [AuthService, LoaderBlockService],
+  exports: [
+    SharedFooterComponent, 
+    SharedHeaderComponent, 
+    SharedLoaderBlockComponent,
+    TimePipe
+  ]
 })
 export class SharedModule { }
