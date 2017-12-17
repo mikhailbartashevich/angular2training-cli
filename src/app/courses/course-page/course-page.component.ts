@@ -4,11 +4,8 @@ import { CourseDetails } from '../course-details.model';
 import { FilterByTitlePipe } from '../pipes/filter-by-title.pipe';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/from';
-import 'rxjs/operators/filter';
-import 'rxjs/operators/concatMap';
-import 'rxjs/operators/takeUntil';
-import 'rxjs/operators/toArray'; 
+import { from } from 'rxjs/observable/from';
+import { concatMap, filter, takeUntil, toArray } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course-page',
@@ -30,7 +27,9 @@ export class CoursePageComponent implements OnInit, OnDestroy {
 
   public onDeleteCourse(course: CourseDetails) {
     this.coursesService.removeCourse(course)
-        // .takeUntil(this.subject)
+        .pipe(
+          takeUntil(this.subject)
+        )
         .subscribe((courses: CourseDetails[]) => this.courses = courses);
   }
 
@@ -47,16 +46,18 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   }
 
   private getUpToDateList(): Observable<CourseDetails[]> {
-    return this.coursesService.getList();
-        // .takeUntil(this.subject)
-        // .concatMap((courses: CourseDetails[]) => Observable.from(courses))
-        // .filter((course: CourseDetails) => {
-        //   const currentDate = new Date();
-        //   const lastTwoWeeks = new Date();
-        //   lastTwoWeeks.setDate(currentDate.getDate() - 14);
-        //   return new Date(course.creationDateMs) < lastTwoWeeks;
-        // })
-        // .toArray();
+    return this.coursesService.getList()
+        .pipe (
+          takeUntil(this.subject),
+          concatMap((courses: CourseDetails[]) => from(courses)),
+          filter((course: CourseDetails) => {
+            const currentDate = new Date();
+            const lastTwoWeeks = new Date();
+            lastTwoWeeks.setDate(currentDate.getDate() - 30);
+            return new Date(course.creationDateMs) > lastTwoWeeks;
+          }),
+          toArray()
+        );
   }
 
 }
