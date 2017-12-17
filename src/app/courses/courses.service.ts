@@ -26,7 +26,7 @@ export class CoursesService {
       descriptionFake: 'Second description',
       durationMsFake: 110000,
       creationDateMsFake: 1513013411287,
-      topRatedFake: true
+      topRatedFake: false
     });
 
     this.courses.push({
@@ -35,7 +35,7 @@ export class CoursesService {
       descriptionFake: 'Third description',
       durationMsFake: 120000,
       creationDateMsFake: 1511188015987,
-      topRatedFake: false
+      topRatedFake: true
     });
   }
 
