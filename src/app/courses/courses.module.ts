@@ -9,6 +9,7 @@ import {
 } from '@angular/material';
 import { CourseItemComponent } from './course-item/course-item.component';
 import { CourseListComponent } from './course-list/course-list.component';
+import { AddCoursePageComponent } from './add-course-page/add-course-page.component';
 import { CoursePageComponent } from './course-page/course-page.component';
 import { CourseToolboxComponent } from './course-toolbox/course-toolbox.component';
 import { SharedModule } from '../shared/shared.module';
@@ -31,6 +32,7 @@ import { FilterByTitlePipe } from './pipes/filter-by-title.pipe';
   declarations: [
     CourseItemComponent,
     CourseListComponent,
+    AddCoursePageComponent,
     CoursePageComponent,
     CourseToolboxComponent,
     DeleteConfirmationDialogComponent,

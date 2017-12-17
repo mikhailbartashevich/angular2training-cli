@@ -20,17 +20,19 @@ export class SharedHeaderComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.authService.getUserInfo()
-      .pipe(
-        takeUntil(this.subject)
-      )
-      .subscribe((userInfo: User) => {
-        this.user = userInfo
-      });
+        .pipe(
+          takeUntil(this.subject)
+        )
+        .subscribe((userInfo: User) => {
+          this.user = userInfo;
+          if(!this.user) {
+            this.router.navigate(['login']);
+          }
+        });
   }
 
   public onLogoffClick() {
     this.authService.logout();
-    this.router.navigate(['login']);
   }
 
   public ngOnDestroy() {

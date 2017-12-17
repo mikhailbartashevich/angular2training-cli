@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-toolbox',
@@ -11,8 +12,14 @@ export class CourseToolboxComponent {
 
   public searchField: string;
 
+  constructor(private router: Router) {}
+
   public onFindButtonClick() {
     this.findCourse.emit(this.searchField);
+  }
+
+  public onAddCourseButtonClick() {
+    this.router.navigate(['add-course']);
   }
 
 }

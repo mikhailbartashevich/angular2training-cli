@@ -1,0 +1,46 @@
+.container {
+  padding: 20px;
+}
+
+app-shared-footer {
+  bottom: 20px;
+  margin: 0 auto;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}
+
+app-shared-header {
+  display: block;
+  margin-bottom: 20px;
+}
+
+fieldset {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.form-control {
+  align-items: center;
+  display: flex;
+  width: 250px;
+  margin: 20px auto;
+}
+
+label {
+  width: 100px;
+  display: inline-block;
+}
+
+.button-bar input {
+  width: 100px;
+  margin-right: 20px;
+}
+
+.button-bar {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto 0;
+  width: 400px;
+}
