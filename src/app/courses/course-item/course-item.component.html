@@ -13,7 +13,9 @@
               </div>
               <mat-icon *ngIf="courseDetails.topRated">star</mat-icon>
             </div>
-          <div class="date">{{courseDetails.creationDateMs | date : 'dd/MM/yyyy'}}</div>
+            <div class="date">
+              Created: {{courseDetails.creationDateMs | date : 'dd/MM/yyyy'}}
+            </div>
       </div>
 
       <div>
