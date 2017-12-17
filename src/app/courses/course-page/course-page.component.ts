@@ -6,7 +6,7 @@ import { LoaderBlockService } from '../../shared/loader-block.service';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { from } from 'rxjs/observable/from';
-import { concatMap, filter, takeUntil, toArray } from 'rxjs/operators';
+import { concatMap, map, filter, takeUntil, toArray } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course-page',
@@ -55,9 +55,10 @@ export class CoursePageComponent implements OnInit, OnDestroy {
 
   public onFindCourse(title: string) {
     this.getUpToDateList()
-        .subscribe((courses: CourseDetails[]) => 
-          this.courses = this.filterByTitlePipe.transform(courses, title) 
-        );
+        .pipe(
+          map((courses: CourseDetails[]) => this.filterByTitlePipe.transform(courses, title))
+        )
+        .subscribe((courses: CourseDetails[]) => this.courses = courses);
   }
 
   public ngOnDestroy() {
@@ -67,7 +68,7 @@ export class CoursePageComponent implements OnInit, OnDestroy {
 
   private getUpToDateList(): Observable<CourseDetails[]> {
     return this.coursesService.getList()
-        .pipe (
+        .pipe(
           takeUntil(this.subject),
           concatMap((courses: CourseDetails[]) => from(courses)),
           filter((course: CourseDetails) => {
