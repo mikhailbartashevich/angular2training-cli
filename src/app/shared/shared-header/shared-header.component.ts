@@ -26,8 +26,6 @@ export class SharedHeaderComponent implements OnInit, OnDestroy {
       .subscribe((userInfo: User) => {
         this.user = userInfo
       });
-
-    this.authService.getUser();
   }
 
   public onLogoffClick() {

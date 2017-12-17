@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { User } from './user.model';
-import { Subject } from 'rxjs/Subject';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class AuthService {
 
-  private userInfo: Subject<User> = new Subject();
-  private user: User;
+  private userInfo: ReplaySubject<User> = new ReplaySubject();
 
   public login(user: User) {
-    this.user = user;
     this.userInfo.next(user);
   }
 
@@ -17,11 +15,7 @@ export class AuthService {
     this.userInfo.next(null);
   }
 
-  public getUser() {
-    this.userInfo.next(this.user);
-  }
-
-  public getUserInfo(): Subject<User> {
+  public getUserInfo(): ReplaySubject<User> {
     return this.userInfo;
   }
 

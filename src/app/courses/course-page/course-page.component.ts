@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { CoursesService } from '../courses.service';
 import { CourseDetails } from '../course-details.model';
+import { CourseDetailsFake } from '../course-details-fake.model';
 import { FilterByTitlePipe } from '../pipes/filter-by-title.pipe';
 import { LoaderBlockService } from '../../shared/loader-block.service';
 import { Subject } from 'rxjs/Subject';
@@ -41,7 +42,20 @@ export class CoursePageComponent implements OnInit, OnDestroy {
     this.loaderBlockService.show();
     this.coursesService.removeCourse(course)
         .pipe(
-          takeUntil(this.subject)
+          takeUntil(this.subject),
+          concatMap((courses: CourseDetailsFake[]) => from(courses)),
+          map(
+            (courseFake: CourseDetailsFake) => 
+              new CourseDetails(
+                courseFake.idFake,
+                courseFake.titleFake,
+                courseFake.durationMsFake,
+                courseFake.creationDateMsFake,
+                courseFake.descriptionFake,
+                courseFake.topRatedFake
+              )
+          ),
+          toArray()
         )
         .subscribe(
           (courses: CourseDetails[]) => {
@@ -70,7 +84,18 @@ export class CoursePageComponent implements OnInit, OnDestroy {
     return this.coursesService.getList()
         .pipe(
           takeUntil(this.subject),
-          concatMap((courses: CourseDetails[]) => from(courses)),
+          concatMap((courses: CourseDetailsFake[]) => from(courses)),
+          map(
+            (courseFake: CourseDetailsFake) => 
+              new CourseDetails(
+                courseFake.idFake,
+                courseFake.titleFake,
+                courseFake.durationMsFake,
+                courseFake.creationDateMsFake,
+                courseFake.descriptionFake,
+                courseFake.topRatedFake
+              )
+          ),
           filter((course: CourseDetails) => {
             const currentDate = new Date();
             const lastTwoWeeks = new Date();
