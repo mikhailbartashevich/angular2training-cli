@@ -13,7 +13,7 @@ import { SharedModule } from './shared/shared.module';
 
 const Routes = [
   {path: '', component: LoginPageComponent},
-  {path: 'courses', component: CoursePageComponent},\
+  {path: 'courses', component: CoursePageComponent},
   {path: 'add-course', component: AddCoursePageComponent},
   {path: 'login', component: LoginPageComponent},
 ];
