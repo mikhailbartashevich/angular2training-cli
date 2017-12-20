@@ -30,9 +30,9 @@ export class CoursePageComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.ngZone.onUnstable
-        .subscribe(() => console.log('unstable ' + new Date()));
+        .subscribe(/*() => console.log('unstable ' + new Date())*/);
     this.ngZone.onStable
-        .subscribe(() => console.log('stable ' + new Date()));
+        .subscribe(/*() => console.log('stable ' + new Date())*/);
 
     this.getUpToDateList()
         .subscribe((courses: CourseDetails[]) => this.courses = courses);

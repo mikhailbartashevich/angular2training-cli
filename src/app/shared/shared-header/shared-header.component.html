@@ -6,7 +6,7 @@
       <div class="title">Courses</div>
   </div>
   <div *ngIf="user">
-      <div>{{user.login}}</div>
+      <div>{{user.name.first}} {{user.name.last}}</div>
       <div>
           <a href="/" (click)="onLogoffClick()">logoff</a>
       </div>

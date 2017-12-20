@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpModule } from '@angular/http';
 import { SharedFooterComponent } from './shared-footer/shared-footer.component';
 import { SharedHeaderComponent } from './shared-header/shared-header.component';
 import { SharedLoaderBlockComponent } from './shared-loader-block/shared-loader-block.component';
@@ -9,18 +10,19 @@ import { LoaderBlockService } from './loader-block.service';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    HttpModule
   ],
   declarations: [
-    SharedFooterComponent, 
-    SharedHeaderComponent, 
+    SharedFooterComponent,
+    SharedHeaderComponent,
     SharedLoaderBlockComponent,
     TimePipe
   ],
   providers: [AuthService, LoaderBlockService],
   exports: [
-    SharedFooterComponent, 
-    SharedHeaderComponent, 
+    SharedFooterComponent,
+    SharedHeaderComponent,
     SharedLoaderBlockComponent,
     TimePipe
   ]

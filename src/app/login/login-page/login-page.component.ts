@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { User } from '../../shared/user.model';
+import { User, UserName } from '../../shared/user.model';
 import { AuthService } from '../../shared/auth.service';
 import { LoaderBlockService } from '../../shared/loader-block.service';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent {
-  public user: User = {login: '', password: ''};
+  public user: User = new User('', '', new UserName('', ''));
 
   constructor(
     private authService: AuthService,
@@ -20,13 +20,20 @@ export class LoginPageComponent {
   ) {}
 
   public onEnterButtonClick() {
-    this.authService.login(this.user);
     this.loaderBlockService.show();
-    setTimeout(() => {
-      this.loaderBlockService.hide();
-      this.router.navigate(['courses']);
-    }, 1500);
-    
+    this.authService.login(this.user)
+    .subscribe(
+      (data: any) => {
+        this.loaderBlockService.hide();
+        this.authService.setToken(data.token);
+        this.authService.fetchUserInfo();
+        this.router.navigate(['courses']);
+      },
+      (err: any) => {
+        this.loaderBlockService.hide();
+        console.log(err._body);
+      }
+    );
   }
 
 }
