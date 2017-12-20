@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { User } from '../user.model';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -16,7 +16,11 @@ export class SharedHeaderComponent implements OnInit, OnDestroy {
   public user: User;
   public subject: Subject<User> = new Subject();
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private changeDetector: ChangeDetectorRef
+  ) {}
 
   public ngOnInit() {
     this.authService.getUserInfo()
@@ -25,6 +29,7 @@ export class SharedHeaderComponent implements OnInit, OnDestroy {
         )
         .subscribe((userInfo: User) => {
           this.user = userInfo;
+          this.changeDetector.markForCheck();
           if (!this.user) {
             this.router.navigate(['login']);
           }
