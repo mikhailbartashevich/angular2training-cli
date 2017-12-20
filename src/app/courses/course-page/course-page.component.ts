@@ -45,7 +45,7 @@ export class CoursePageComponent implements OnInit, OnDestroy {
           takeUntil(this.subject),
           concatMap((courses: CourseDetailsFake[]) => from(courses)),
           map(
-            (courseFake: CourseDetailsFake) => 
+            (courseFake: CourseDetailsFake) =>
               new CourseDetails(
                 courseFake.idFake,
                 courseFake.titleFake,
@@ -59,10 +59,8 @@ export class CoursePageComponent implements OnInit, OnDestroy {
         )
         .subscribe(
           (courses: CourseDetails[]) => {
-            setTimeout(() => {
-              this.courses = courses;
-              this.loaderBlockService.hide();
-            }, 1500);
+            this.courses = courses;
+            this.loaderBlockService.hide();
           }
         );
   }
@@ -86,7 +84,7 @@ export class CoursePageComponent implements OnInit, OnDestroy {
           takeUntil(this.subject),
           concatMap((courses: CourseDetailsFake[]) => from(courses)),
           map(
-            (courseFake: CourseDetailsFake) => 
+            (courseFake: CourseDetailsFake) =>
               new CourseDetails(
                 courseFake.idFake,
                 courseFake.titleFake,
