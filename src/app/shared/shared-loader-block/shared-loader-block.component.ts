@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LoaderBlockService } from '../loader-block.service';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-shared-loader-block',
@@ -9,30 +8,14 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./shared-loader-block.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedLoaderBlockComponent implements OnInit, OnDestroy {
+export class SharedLoaderBlockComponent implements OnInit {
 
-  public visibleContent: boolean;
-  public subject: Subject<boolean> = new Subject();
+  public visibleContent$: Subject<boolean>;
 
-  constructor(
-    private loaderBlockService: LoaderBlockService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  constructor(private loaderBlockService: LoaderBlockService) {}
 
   public ngOnInit() {
-    this.loaderBlockService.isVisible()
-      .pipe(
-        takeUntil(this.subject)
-      )
-      .subscribe((visible: boolean) => {
-        this.visibleContent = visible;
-        this.changeDetectorRef.markForCheck();
-      });
-  }
-
-  public ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
+    this.visibleContent$ = this.loaderBlockService.isVisible();
   }
 
 }

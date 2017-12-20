@@ -16,11 +16,14 @@ export class TimePipe implements PipeTransform {
 
     if (hours) {
       return `${hours}h ${minutes}min ${seconds}sec`;
-    } else if (minutes) {
-      return `${minutes}min ${seconds}sec`;
-    } else {
-      return `${seconds}sec`;
     }
+
+    if (minutes) {
+      return `${minutes}min ${seconds}sec`;
+    }
+
+    return `${seconds}sec`;
+
   }
 
 }

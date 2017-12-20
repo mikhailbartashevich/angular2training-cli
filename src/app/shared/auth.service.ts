@@ -5,13 +5,13 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 @Injectable()
 export class AuthService {
 
-  private userInfo: ReplaySubject<User> = new ReplaySubject();
+  private userInfo = new ReplaySubject<User>();
 
   public login(user: User) {
     this.userInfo.next(user);
   }
 
-  public logout() {
+  public logout(): void {
     this.userInfo.next(null);
   }
 
