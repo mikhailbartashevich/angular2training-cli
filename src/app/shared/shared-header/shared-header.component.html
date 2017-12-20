@@ -5,7 +5,7 @@
       </div>
       <div class="title">Courses</div>
   </div>
-  <div *ngIf="user">
+  <div *ngIf="user$ | async as user">
       <div>{{user.name.first}} {{user.name.last}}</div>
       <div>
           <a href="/" (click)="onLogoffClick()">logoff</a>
