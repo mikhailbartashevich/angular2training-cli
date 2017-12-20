@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, NgZone, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CoursesService } from '../courses.service';
 import { CourseDetails } from '../course-details.model';
 import { CourseDetailsFake } from '../course-details-fake.model';
@@ -25,15 +25,9 @@ export class CoursePageComponent implements OnInit, OnDestroy {
     private coursesService: CoursesService,
     private loaderBlockService: LoaderBlockService,
     private filterByTitlePipe: FilterByTitlePipe,
-    private ngZone: NgZone
   ) {}
 
   public ngOnInit() {
-    this.ngZone.onUnstable
-        .subscribe(/*() => console.log('unstable ' + new Date())*/);
-    this.ngZone.onStable
-        .subscribe(/*() => console.log('stable ' + new Date())*/);
-
     this.getUpToDateList()
         .subscribe((courses: CourseDetails[]) => this.courses = courses);
   }
@@ -97,7 +91,7 @@ export class CoursePageComponent implements OnInit, OnDestroy {
           filter((course: CourseDetails) => {
             const currentDate = new Date();
             const lastTwoWeeks = new Date();
-            lastTwoWeeks.setDate(currentDate.getDate() - 30);
+            lastTwoWeeks.setDate(currentDate.getDate() - 60);
             return new Date(course.creationDateMs) > lastTwoWeeks;
           }),
           toArray()

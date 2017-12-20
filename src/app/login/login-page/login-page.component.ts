@@ -1,8 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { User, UserName } from '../../shared/user.model';
 import { AuthService } from '../../shared/auth.service';
 import { LoaderBlockService } from '../../shared/loader-block.service';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login-page',
@@ -10,8 +12,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPageComponent {
+export class LoginPageComponent implements OnDestroy {
   public user: User = new User('', '', new UserName('', ''));
+  public subject: Subject<any> = new Subject();
 
   constructor(
     private authService: AuthService,
@@ -22,6 +25,9 @@ export class LoginPageComponent {
   public onEnterButtonClick() {
     this.loaderBlockService.show();
     this.authService.login(this.user)
+    .pipe (
+      takeUntil(this.subject)
+    )
     .subscribe(
       (data: any) => {
         this.loaderBlockService.hide();
@@ -34,6 +40,11 @@ export class LoginPageComponent {
         console.log(err._body);
       }
     );
+  }
+
+  public ngOnDestroy() {
+    this.subject.next();
+    this.subject.complete();
   }
 
 }
