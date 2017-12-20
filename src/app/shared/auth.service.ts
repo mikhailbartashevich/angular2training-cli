@@ -47,7 +47,7 @@ export class AuthService {
     .pipe (
       map((response: Response) => response.json()),
     )
-    .subscribe((userInfo: any) => {
+    .subscribe((userInfo: any) => { // TODO: use do action?
       const user = new User(
         userInfo.login,
         userInfo.password,
