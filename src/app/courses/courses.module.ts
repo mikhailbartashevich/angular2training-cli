@@ -18,10 +18,12 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/
 import { DynamicBorderDirective } from './directives/dynamic-border.directive';
 import { OrderByPipe } from './pipes/order-by.pipe';
 import { FilterByTitlePipe } from './pipes/filter-by-title.pipe';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   imports: [
     CommonModule,
+    HttpModule,
     SharedModule,
     FormsModule,
     MatDialogModule,

@@ -3,44 +3,35 @@ import { CourseDetails } from './course-details.model';
 import { CourseDetailsFake } from './course-details-fake.model';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { from } from 'rxjs/observable/from';
+import { map, toArray, concatMap } from 'rxjs/operators';
+import { Http, Response } from '@angular/http';
 
 @Injectable()
 export class CoursesService {
 
   private courses: CourseDetailsFake[];
+  private baseUrl = 'http://localhost:3004';
 
-  constructor() {
+  constructor(private http: Http) {
     this.courses = [];
-    this.courses.push({
-      idFake: 1,
-      titleFake: 'First course',
-      descriptionFake: 'First description',
-      durationMsFake: 100000,
-      creationDateMsFake: 1511188015987,
-      topRatedFake: false
-    });
-
-    this.courses.push({
-      idFake: 2,
-      titleFake: 'Second course',
-      descriptionFake: 'Second description',
-      durationMsFake: 110000,
-      creationDateMsFake: 1513013411287,
-      topRatedFake: false
-    });
-
-    this.courses.push({
-      idFake: 3,
-      titleFake: 'Third course',
-      descriptionFake: 'Third description',
-      durationMsFake: 120000,
-      creationDateMsFake: 1511188015987,
-      topRatedFake: true
-    });
   }
 
-  public getList(): Observable<CourseDetailsFake[]> {
-    return of(this.courses);
+  public getList(start: number, count: number): Observable<CourseDetails[]> {
+    return this.http.get(`${this.baseUrl}/courses?start=${start}&count=${count}`)
+      .pipe (
+        map((response: Response) => response.json()),
+        concatMap((dbModelArray: any[]) => from(dbModelArray)),
+        map((dbModel: any) => new CourseDetails(
+          dbModel.id,
+          dbModel.name,
+          dbModel.length * 60 * 1000,
+          new Date(dbModel.date).getTime(),
+          dbModel.description,
+          dbModel.isTopRated
+        )),
+        toArray()
+      );
   }
 
   public createCourse(coursedetails: CourseDetails): Observable<CourseDetailsFake[]> {

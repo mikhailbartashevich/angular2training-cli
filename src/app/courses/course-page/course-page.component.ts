@@ -18,7 +18,7 @@ import { concatMap, map, filter, takeUntil, toArray } from 'rxjs/operators';
 })
 export class CoursePageComponent implements OnInit, OnDestroy {
 
-  public courses: CourseDetails[];
+  public courses$: Observable<CourseDetails[]>;
   private subject: Subject<CourseDetails[]> = new Subject();
 
   constructor(
@@ -28,8 +28,7 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit() {
-    this.getUpToDateList()
-        .subscribe((courses: CourseDetails[]) => this.courses = courses);
+    this.courses$ = this.getUpToDateList();
   }
 
   public onDeleteCourse(course: CourseDetails) {
@@ -53,7 +52,6 @@ export class CoursePageComponent implements OnInit, OnDestroy {
         )
         .subscribe(
           (courses: CourseDetails[]) => {
-            this.courses = courses;
             this.loaderBlockService.hide();
           }
         );
@@ -63,8 +61,7 @@ export class CoursePageComponent implements OnInit, OnDestroy {
     this.getUpToDateList()
         .pipe(
           map((courses: CourseDetails[]) => this.filterByTitlePipe.transform(courses, title))
-        )
-        .subscribe((courses: CourseDetails[]) => this.courses = courses);
+        );
   }
 
   public ngOnDestroy() {
@@ -73,25 +70,13 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   }
 
   private getUpToDateList(): Observable<CourseDetails[]> {
-    return this.coursesService.getList()
+    return this.coursesService.getList(0, 10)
         .pipe(
-          takeUntil(this.subject),
-          concatMap((courses: CourseDetailsFake[]) => from(courses)),
-          map(
-            (courseFake: CourseDetailsFake) =>
-              new CourseDetails(
-                courseFake.idFake,
-                courseFake.titleFake,
-                courseFake.durationMsFake,
-                courseFake.creationDateMsFake,
-                courseFake.descriptionFake,
-                courseFake.topRatedFake
-              )
-          ),
+          concatMap((courses: CourseDetails[]) => from(courses)),
           filter((course: CourseDetails) => {
             const currentDate = new Date();
             const lastTwoWeeks = new Date();
-            lastTwoWeeks.setDate(currentDate.getDate() - 60);
+            lastTwoWeeks.setDate(currentDate.getDate() - 360);
             return new Date(course.creationDateMs) > lastTwoWeeks;
           }),
           toArray()
