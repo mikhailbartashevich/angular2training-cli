@@ -14,3 +14,6 @@ app-shared-header, app-course-toolbox, app-course-list {
   margin-bottom: 20px;
 }
 
+.paging {
+  float: right;
+}

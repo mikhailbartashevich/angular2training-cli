@@ -2,6 +2,9 @@
   <app-shared-header></app-shared-header>
   <app-course-toolbox (findCourse)="onFindCourse($event)"></app-course-toolbox>
   <app-course-list [courses]="courses$ | async" (deleteCourse)="onDeleteCourse($event)"></app-course-list>
+  <div class="paging">
+    <input type="button" value="Load more courses" (click)="onLoadMoreCoursesButtonClick()"/>
+  </div>
   <app-shared-footer></app-shared-footer>
 </div>
 

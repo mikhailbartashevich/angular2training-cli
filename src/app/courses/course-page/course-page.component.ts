@@ -20,6 +20,8 @@ export class CoursePageComponent implements OnInit, OnDestroy {
 
   public courses$: Observable<CourseDetails[]>;
   private subject: Subject<CourseDetails[]> = new Subject();
+  private start = 0;
+  private count = 10;
 
   constructor(
     private coursesService: CoursesService,
@@ -28,7 +30,12 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit() {
-    this.courses$ = this.getUpToDateList();
+    this.courses$ = this.getUpToDateList(this.start, this.count);
+  }
+
+  public onLoadMoreCoursesButtonClick() {
+    this.count += 10;
+    this.courses$ = this.getUpToDateList(this.start, this.count);
   }
 
   public onDeleteCourse(course: CourseDetails) {
@@ -58,7 +65,7 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   }
 
   public onFindCourse(title: string) {
-    this.getUpToDateList()
+    this.getUpToDateList(0, 10)
         .pipe(
           map((courses: CourseDetails[]) => this.filterByTitlePipe.transform(courses, title))
         );
@@ -69,8 +76,8 @@ export class CoursePageComponent implements OnInit, OnDestroy {
     this.subject.complete();
   }
 
-  private getUpToDateList(): Observable<CourseDetails[]> {
-    return this.coursesService.getList(0, 10)
+  private getUpToDateList(start: number, count: number): Observable<CourseDetails[]> {
+    return this.coursesService.getList(start, count)
         .pipe(
           concatMap((courses: CourseDetails[]) => from(courses)),
           filter((course: CourseDetails) => {
