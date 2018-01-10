@@ -21,6 +21,21 @@ module.exports = (server) => {
 		
 		res.json(courses);
 	});
+
+	router.get('/courses/find', (req, res, next) => {
+		const url_parts = url.parse(req.originalUrl, true);
+		const query = url_parts.query;
+		const	courseName = query.course;
+		let	courses = server.db.getState().courses;
+		const foundCourse = courses.find((course) => 
+			course.name.toLowerCase().startsWith(courseName.toLowerCase())
+		);
+		courses = foundCourse ? [foundCourse] : [];
+		if(!courses.length) {
+			courses = server.db.getState().courses.slice(0, 10);
+		}
+		res.json(courses);
+	});
 	
 	return router;
 };

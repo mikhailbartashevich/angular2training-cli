@@ -13,11 +13,11 @@ export class CoursesService {
 
   private cachedCourses: CourseDetails[] = [];
   private cachedCourses$ = new Subject<CourseDetails[]>();
-  private courses: CourseDetailsFake[];
+  private coursesFake: CourseDetailsFake[];
   private baseUrl = 'http://localhost:3004';
 
   constructor(private http: Http) {
-    this.courses = [];
+    this.coursesFake = [];
   }
 
   public getCachedCoursesArray(): CourseDetails[] {
@@ -29,27 +29,42 @@ export class CoursesService {
   }
 
   public getList(start: number, count: number) {
-    this.http.get(`${this.baseUrl}/courses?start=${start}&count=${count}`)
-      .pipe (
-        map((response: Response) => response.json()),
-        concatMap((dbModelArray: any[]) => from(dbModelArray)),
-        map((dbModel: any) => new CourseDetails(
-          dbModel.id,
-          dbModel.name,
-          dbModel.length * 60 * 1000,
-          new Date(dbModel.date).getTime(),
-          dbModel.description,
-          dbModel.isTopRated
-        )),
-        toArray()
-      ).subscribe((courseDetails: CourseDetails[]) => {
-        this.cachedCourses = this.cachedCourses.concat(courseDetails);
-        this.cachedCourses$.next(this.cachedCourses);
+    this.convertServerSideResponse(this.http.get(`${this.baseUrl}/courses?start=${start}&count=${count}`))
+      .subscribe((courseDetails: CourseDetails[]) => {
+        this.updateCache(courseDetails);
       });
   }
 
+  public findCourse(name: string) {
+    this.convertServerSideResponse(this.http.get(`${this.baseUrl}/courses/find?course=${name}`))
+      .subscribe((courseDetails: CourseDetails[]) => {
+        this.cachedCourses$.next(courseDetails);
+      });
+  }
+
+  private updateCache(courseDetails: CourseDetails[]) {
+    this.cachedCourses = this.cachedCourses.concat(courseDetails);
+    this.cachedCourses$.next(this.cachedCourses);
+  }
+
+  private convertServerSideResponse(httpResponse: Observable<any>): Observable<CourseDetails[]> {
+    return httpResponse.pipe (
+      map((response: Response) => response.json()),
+      concatMap((dbModelArray: any[]) => from(dbModelArray)),
+      map((dbModel: any) => new CourseDetails(
+        dbModel.id,
+        dbModel.name,
+        dbModel.length * 60 * 1000,
+        new Date(dbModel.date).getTime(),
+        dbModel.description,
+        dbModel.isTopRated
+      )),
+      toArray()
+    );
+  }
+
   public createCourse(coursedetails: CourseDetails): Observable<CourseDetailsFake[]> {
-    this.courses.push(new CourseDetailsFake(
+    this.coursesFake.push(new CourseDetailsFake(
       coursedetails.id,
       coursedetails.title,
       coursedetails.durationMs,
@@ -57,12 +72,12 @@ export class CoursesService {
       coursedetails.description,
       coursedetails.topRated
     ));
-    return of(this.courses);
+    return of(this.coursesFake);
   }
 
   public updateCourse(coursedetails: CourseDetails): Observable<CourseDetailsFake[]> {
-    const index = this.courses.findIndex((course) => course.idFake === coursedetails.id);
-    this.courses[index] = new CourseDetailsFake(
+    const index = this.coursesFake.findIndex((course) => course.idFake === coursedetails.id);
+    this.coursesFake[index] = new CourseDetailsFake(
       coursedetails.id,
       coursedetails.title,
       coursedetails.durationMs,
@@ -70,17 +85,17 @@ export class CoursesService {
       coursedetails.description,
       coursedetails.topRated
     );
-    return of(this.courses);
+    return of(this.coursesFake);
   }
 
   public removeCourse(coursedetails: CourseDetails): Observable<CourseDetailsFake[]> {
-    const index = this.courses.findIndex((course) => course.idFake === coursedetails.id);
-    this.courses.splice(index, 1);
-    return of(this.courses);
+    const index = this.coursesFake.findIndex((course) => course.idFake === coursedetails.id);
+    this.coursesFake.splice(index, 1);
+    return of(this.coursesFake);
   }
 
   public getCourseById(id: number): Observable<CourseDetailsFake> {
-    return of(this.courses.find((courseDetails) => courseDetails.idFake === id));
+    return of(this.coursesFake.find((courseDetails) => courseDetails.idFake === id));
   }
 
 }

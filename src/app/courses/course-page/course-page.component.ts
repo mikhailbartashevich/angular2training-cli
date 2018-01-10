@@ -64,10 +64,8 @@ export class CoursePageComponent implements OnInit, OnDestroy {
         );
   }
 
-  public onFindCourse(title: string) {
-    this.courses$.next(
-      this.filterByTitlePipe.transform(this.coursesService.getCachedCoursesArray(), title)
-    );
+  public onFindCourse(courseName: string) {
+    this.coursesService.findCourse(courseName);
   }
 
   public ngOnDestroy() {
