@@ -5,9 +5,8 @@ import { CourseDetailsFake } from '../course-details-fake.model';
 import { FilterByTitlePipe } from '../pipes/filter-by-title.pipe';
 import { LoaderBlockService } from '../../shared/loader-block.service';
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
 import { from } from 'rxjs/observable/from';
-import { concatMap, map, filter, takeUntil, toArray } from 'rxjs/operators';
+import { concatMap, map, takeUntil, toArray } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course-page',
@@ -18,7 +17,7 @@ import { concatMap, map, filter, takeUntil, toArray } from 'rxjs/operators';
 })
 export class CoursePageComponent implements OnInit, OnDestroy {
 
-  public courses$: Observable<CourseDetails[]>;
+  public courses$: Subject<CourseDetails[]>;
   private subject: Subject<CourseDetails[]> = new Subject();
   private start = 0;
   private count = 10;
@@ -30,12 +29,13 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit() {
-    this.courses$ = this.getUpToDateList(this.start, this.count);
+    this.courses$ = this.coursesService.getCachedCourses();
+    this.coursesService.getList(this.start, this.count);
   }
 
   public onLoadMoreCoursesButtonClick() {
-    this.count += 10;
-    this.courses$ = this.getUpToDateList(this.start, this.count);
+    this.start += 10;
+    this.coursesService.getList(this.start, this.count);
   }
 
   public onDeleteCourse(course: CourseDetails) {
@@ -65,10 +65,9 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   }
 
   public onFindCourse(title: string) {
-    this.getUpToDateList(0, 10)
-        .pipe(
-          map((courses: CourseDetails[]) => this.filterByTitlePipe.transform(courses, title))
-        );
+    this.courses$.next(
+      this.filterByTitlePipe.transform(this.coursesService.getCachedCoursesArray(), title)
+    );
   }
 
   public ngOnDestroy() {
@@ -76,18 +75,18 @@ export class CoursePageComponent implements OnInit, OnDestroy {
     this.subject.complete();
   }
 
-  private getUpToDateList(start: number, count: number): Observable<CourseDetails[]> {
-    return this.coursesService.getList(start, count)
-        .pipe(
-          concatMap((courses: CourseDetails[]) => from(courses)),
-          filter((course: CourseDetails) => {
-            const currentDate = new Date();
-            const lastTwoWeeks = new Date();
-            lastTwoWeeks.setDate(currentDate.getDate() - 360);
-            return new Date(course.creationDateMs) > lastTwoWeeks;
-          }),
-          toArray()
-        );
-  }
+  // private getUpToDateList(start: number, count: number) {
+  //   return this.coursesService.getList(start, count)
+  //       .pipe(
+  //         concatMap((courses: CourseDetails[]) => from(courses)),
+  //         filter((course: CourseDetails) => {
+  //           const currentDate = new Date();
+  //           const lastTwoWeeks = new Date();
+  //           lastTwoWeeks.setDate(currentDate.getDate() - 360);
+  //           return new Date(course.creationDateMs) > lastTwoWeeks;
+  //         }),
+  //         toArray()
+  //       );
+  // }
 
 }

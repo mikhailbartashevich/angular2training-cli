@@ -6,10 +6,13 @@ import { of } from 'rxjs/observable/of';
 import { from } from 'rxjs/observable/from';
 import { map, toArray, concatMap } from 'rxjs/operators';
 import { Http, Response } from '@angular/http';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class CoursesService {
 
+  private cachedCourses: CourseDetails[] = [];
+  private cachedCourses$ = new Subject<CourseDetails[]>();
   private courses: CourseDetailsFake[];
   private baseUrl = 'http://localhost:3004';
 
@@ -17,8 +20,16 @@ export class CoursesService {
     this.courses = [];
   }
 
-  public getList(start: number, count: number): Observable<CourseDetails[]> {
-    return this.http.get(`${this.baseUrl}/courses?start=${start}&count=${count}`)
+  public getCachedCoursesArray(): CourseDetails[] {
+    return this.cachedCourses;
+  }
+
+  public getCachedCourses(): Subject<CourseDetails[]>  {
+    return this.cachedCourses$;
+  }
+
+  public getList(start: number, count: number) {
+    this.http.get(`${this.baseUrl}/courses?start=${start}&count=${count}`)
       .pipe (
         map((response: Response) => response.json()),
         concatMap((dbModelArray: any[]) => from(dbModelArray)),
@@ -31,7 +42,10 @@ export class CoursesService {
           dbModel.isTopRated
         )),
         toArray()
-      );
+      ).subscribe((courseDetails: CourseDetails[]) => {
+        this.cachedCourses = this.cachedCourses.concat(courseDetails);
+        this.cachedCourses$.next(this.cachedCourses);
+      });
   }
 
   public createCourse(coursedetails: CourseDetails): Observable<CourseDetailsFake[]> {
