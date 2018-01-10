@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CoursesService } from '../courses.service';
 import { CourseDetails } from '../course-details.model';
-import { CourseDetailsFake } from '../course-details-fake.model';
 import { LoaderBlockService } from '../../shared/loader-block.service';
 import { Subject } from 'rxjs/Subject';
-import { from } from 'rxjs/observable/from';
-import { concatMap, map, takeUntil, toArray } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course-page',

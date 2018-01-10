@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Request, RequestOptions, RequestMethod, Headers } from '@angular/http';
+import { Response, Request, RequestOptions, RequestMethod } from '@angular/http';
 import { User, UserName } from './user.model';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
+import { AuthorizedHttp } from './authorized.http.service';
 
 @Injectable()
 export class AuthService {
 
   private userInfo = new ReplaySubject<User>();
-  private token: string;
   private baseUrl = 'http://localhost:3004';
 
-  constructor(private http: Http) {}
+  constructor(private http: AuthorizedHttp) {}
 
   public login(user: User): Observable<Response> {
     return this.http.post(
@@ -23,7 +23,7 @@ export class AuthService {
       }
     )
     .pipe (
-      map((response: Response) => response.json()),
+      map((response: Response) => response.json())
     );
   }
 
@@ -32,16 +32,13 @@ export class AuthService {
   }
 
   public setToken(token: string): void {
-    this.token = token;
+    this.http.setToken(token);
   }
 
   public fetchUserInfo(): void {
     const requestOptions = new RequestOptions();
     requestOptions.url = `${this.baseUrl}/auth/userinfo`;
     requestOptions.method = RequestMethod.Post;
-    requestOptions.headers = new Headers(
-      {'Authorization': this.token}
-    );
     const request = new Request(requestOptions);
     this.http.request(request)
     .pipe (

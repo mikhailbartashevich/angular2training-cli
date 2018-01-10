@@ -5,8 +5,9 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { from } from 'rxjs/observable/from';
 import { map, toArray, concatMap } from 'rxjs/operators';
-import { Http, Response } from '@angular/http';
+import { Response, Request, RequestMethod, RequestOptions } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
+import { AuthorizedHttp } from '../shared/authorized.http.service';
 
 @Injectable()
 export class CoursesService {
@@ -16,7 +17,7 @@ export class CoursesService {
   private coursesFake: CourseDetailsFake[];
   private baseUrl = 'http://localhost:3004';
 
-  constructor(private http: Http) {
+  constructor(private http: AuthorizedHttp) {
     this.coursesFake = [];
   }
 
@@ -29,13 +30,20 @@ export class CoursesService {
   }
 
   public getList(start: number, count: number) {
-    this.convertServerSideResponse(this.http.get(`${this.baseUrl}/courses?start=${start}&count=${count}`))
-      .subscribe((courseDetails: CourseDetails[]) => {
-        if (start === 0) {
-          this.cachedCourses = [];
-        }
-        this.updateCache(courseDetails);
-      });
+    const requestOptions = new RequestOptions();
+    requestOptions.url = `${this.baseUrl}/courses?start=${start}&count=${count}`;
+    requestOptions.method = RequestMethod.Get;
+    const request = new Request(requestOptions);
+
+    this.convertServerSideResponse(
+      this.http.request(request)
+    )
+    .subscribe((courseDetails: CourseDetails[]) => {
+      if (start === 0) {
+        this.cachedCourses = [];
+      }
+      this.updateCache(courseDetails);
+    });
   }
 
   public findCourse(name: string) {
