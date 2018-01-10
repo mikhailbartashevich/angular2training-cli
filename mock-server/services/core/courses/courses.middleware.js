@@ -36,6 +36,16 @@ module.exports = (server) => {
 		}
 		res.json(courses);
 	});
+
+	router.get('/courses/delete', (req, res, next) => {
+		const url_parts = url.parse(req.originalUrl, true);
+		const query = url_parts.query;
+		const	id = query.id;
+		server.db.get('courses').remove({id: +id}).write();
+		res.json({
+			deleted: id
+		});
+	});
 	
 	return router;
 };

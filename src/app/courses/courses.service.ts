@@ -31,6 +31,9 @@ export class CoursesService {
   public getList(start: number, count: number) {
     this.convertServerSideResponse(this.http.get(`${this.baseUrl}/courses?start=${start}&count=${count}`))
       .subscribe((courseDetails: CourseDetails[]) => {
+        if (start === 0) {
+          this.cachedCourses = [];
+        }
         this.updateCache(courseDetails);
       });
   }
@@ -48,7 +51,7 @@ export class CoursesService {
   }
 
   private convertServerSideResponse(httpResponse: Observable<any>): Observable<CourseDetails[]> {
-    return httpResponse.pipe (
+    return httpResponse.pipe(
       map((response: Response) => response.json()),
       concatMap((dbModelArray: any[]) => from(dbModelArray)),
       map((dbModel: any) => new CourseDetails(
@@ -88,10 +91,10 @@ export class CoursesService {
     return of(this.coursesFake);
   }
 
-  public removeCourse(coursedetails: CourseDetails): Observable<CourseDetailsFake[]> {
-    const index = this.coursesFake.findIndex((course) => course.idFake === coursedetails.id);
-    this.coursesFake.splice(index, 1);
-    return of(this.coursesFake);
+  public removeCourse(coursedetails: CourseDetails): Observable<any> {
+    return this.http.get(`${this.baseUrl}/courses/delete?id=${coursedetails.id}`)
+        .pipe(map((response: Response) => response.json())
+      );
   }
 
   public getCourseById(id: number): Observable<CourseDetailsFake> {
