@@ -5,6 +5,7 @@ export class CourseDetails {
   creationDateMs: number;
   description: string;
   topRated: boolean;
+  authors: string[];
 
   constructor(
     id: number,

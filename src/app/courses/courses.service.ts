@@ -20,6 +20,14 @@ interface DeleteResponse {
   deleted: string;
 }
 
+interface CreateResponse {
+  id: string;
+}
+
+interface UpdateResponse {
+  id: string;
+}
+
 @Injectable()
 export class CoursesService {
 
@@ -58,9 +66,13 @@ export class CoursesService {
     });
   }
 
-  public createCourse(coursedetails: CourseDetails): void {}
+  public createCourse(coursedetails: CourseDetails): Observable<CreateResponse> {
+    return of({id: '1'});
+  }
 
-  public updateCourse(coursedetails: CourseDetails): void {}
+  public updateCourse(coursedetails: CourseDetails): Observable<UpdateResponse> {
+    return of({id: '1'});
+  }
 
   public removeCourse(coursedetails: CourseDetails): Observable<DeleteResponse> {
     return this.http.get<DeleteResponse>(`${this.baseUrl}/courses/delete?id=${coursedetails.id}`);

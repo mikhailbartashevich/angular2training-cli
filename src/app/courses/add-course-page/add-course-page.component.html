@@ -3,37 +3,68 @@
   <app-shared-header></app-shared-header>
 
   <div class="content">
-    <fieldset>
-      <div class="form-control">
-        <label for="title">Title</label>
-        <input id="title" type="text"/>
-      </div>
-      <div class="form-control">
-        <label for="description">Description</label>
-        <textarea id="description"></textarea>
-      </div>
-      <div class="form-control">
-        <label for="date">Date</label>
-        <input id="date" type="date"/>
-      </div>
-      <div class="form-control">
-        <label for="duration">Duration</label>
-        <input id="duration" type="number"/>
-      </div>
-      <div class="form-control">
-        <label for="authors">Authors</label>
-        <textarea id="authors"></textarea>
-      </div>
-    </fieldset>
-  </div>
+    <form #form="ngForm" (submit)="onFormSubmit(form)">
+      <fieldset>
+          <div class="form-control">
+            <label for="title">Title</label>
+            <input 
+                id="title"
+                name="title"
+                type="text"
+                required
+                minlength="5"
+                maxlength="50"
+                #name="ngModel"
+                [(ngModel)]="courseDetails.title"/>
+          </div>
+          <div 
+              class="form-control error-display"
+              *ngIf="name.invalid && name.dirty">
+            {{name?.errors | json}}
+          </div>
+          <div class="form-control">
+            <label for="description">Description</label>
+            <textarea 
+                id="description" 
+                name="description"
+                minlength="5"
+                maxlength="500"
+                required
+                #description="ngModel"
+                [(ngModel)]="courseDetails.description"></textarea>
+          </div>
+          <div 
+              class="form-control error-display"
+              *ngIf="description.invalid && description.dirty">
+            {{description?.errors | json}}
+          </div>
+          <div class="form-control">
+            <label for="date">Date TODO</label>
+            <input id="date" type="date"/>
+          </div>
+          <div class="form-control">
+            <label for="duration">Duration (min) TODO</label>
+            <input 
+                id="duration"
+                name="durationMs"
+                type="number"
+                [(ngModel)]="courseDetails.durationMs"/>
+          </div>
+          <div class="form-control">
+            <label for="authors">Authors TODO</label>
+            <textarea id="authors"></textarea>
+          </div>
+        </fieldset>
 
-  <div class="button-bar">
-    <div>
-        <input type="button" value="Save" (click)="onSaveButtonClick()"/>
-    </div>
-    <div>
-        <input type="button" value="Cancel" (click)="onCancelButtonClick()"/>
-    </div>
+        <div class="button-bar">
+          <div>
+            <input type="submit" value="Save" [disabled]="form.invalid || form.pristine"/>
+          </div>
+          <div>
+            <input type="button" value="Cancel" (click)="onCancelButtonClick()"/>
+          </div>
+        </div>
+    </form>
   </div>
 
   <app-shared-footer></app-shared-footer>
