@@ -36,13 +36,13 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   public onDeleteCourse(course: CourseDetails) {
     this.loaderBlockService.show();
     this.coursesService.removeCourse(course)
-        .pipe(
-          takeUntil(this.subject),
-        )
-        .subscribe(() => {
-          this.loaderBlockService.hide();
-          this.coursesService.getList(0, this.count);
-        });
+      .pipe(
+        takeUntil(this.subject),
+      )
+      .subscribe(() => {
+        this.loaderBlockService.hide();
+        this.coursesService.getList(0, this.count);
+      });
   }
 
   public onFindCourse(courseName: string) {

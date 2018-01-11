@@ -17,6 +17,10 @@ interface ServerCourseDetails {
   isTopRated: boolean;
 }
 
+interface DeleteResponse {
+  deleted: string;
+}
+
 @Injectable()
 export class CoursesService {
 
@@ -107,10 +111,8 @@ export class CoursesService {
     return of(this.coursesFake);
   }
 
-  public removeCourse(coursedetails: CourseDetails): Observable<any> {
-    return this.http.get(`${this.baseUrl}/courses/delete?id=${coursedetails.id}`)
-        .pipe(map((response: Response) => response.json())
-      );
+  public removeCourse(coursedetails: CourseDetails): Observable<DeleteResponse> {
+    return this.http.get<DeleteResponse>(`${this.baseUrl}/courses/delete?id=${coursedetails.id}`);
   }
 
   public getCourseById(id: number): Observable<CourseDetailsFake> {
