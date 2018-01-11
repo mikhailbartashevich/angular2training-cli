@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CourseDetails } from './course-details.model';
-import { CourseDetailsFake } from './course-details-fake.model';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { from } from 'rxjs/observable/from';
@@ -26,16 +25,9 @@ export class CoursesService {
 
   private cachedCourses: CourseDetails[] = [];
   private cachedCourses$ = new Subject<CourseDetails[]>();
-  private coursesFake: CourseDetailsFake[];
   private baseUrl = 'http://localhost:3004';
 
-  constructor(private http: HttpClient) {
-    this.coursesFake = [];
-  }
-
-  public getCachedCoursesArray(): CourseDetails[] {
-    return this.cachedCourses;
-  }
+  constructor(private http: HttpClient) {}
 
   public getCachedCourses(): Subject<CourseDetails[]>  {
     return this.cachedCourses$;
@@ -66,6 +58,14 @@ export class CoursesService {
     });
   }
 
+  public createCourse(coursedetails: CourseDetails): void {}
+
+  public updateCourse(coursedetails: CourseDetails): void {}
+
+  public removeCourse(coursedetails: CourseDetails): Observable<DeleteResponse> {
+    return this.http.get<DeleteResponse>(`${this.baseUrl}/courses/delete?id=${coursedetails.id}`);
+  }
+
   private updateCache(courseDetails: CourseDetails[]) {
     this.cachedCourses = this.cachedCourses.concat(courseDetails);
     this.cachedCourses$.next(this.cachedCourses);
@@ -84,39 +84,6 @@ export class CoursesService {
       )),
       toArray()
     );
-  }
-
-  public createCourse(coursedetails: CourseDetails): Observable<CourseDetailsFake[]> {
-    this.coursesFake.push(new CourseDetailsFake(
-      coursedetails.id,
-      coursedetails.title,
-      coursedetails.durationMs,
-      coursedetails.creationDateMs,
-      coursedetails.description,
-      coursedetails.topRated
-    ));
-    return of(this.coursesFake);
-  }
-
-  public updateCourse(coursedetails: CourseDetails): Observable<CourseDetailsFake[]> {
-    const index = this.coursesFake.findIndex((course) => course.idFake === coursedetails.id);
-    this.coursesFake[index] = new CourseDetailsFake(
-      coursedetails.id,
-      coursedetails.title,
-      coursedetails.durationMs,
-      coursedetails.creationDateMs,
-      coursedetails.description,
-      coursedetails.topRated
-    );
-    return of(this.coursesFake);
-  }
-
-  public removeCourse(coursedetails: CourseDetails): Observable<DeleteResponse> {
-    return this.http.get<DeleteResponse>(`${this.baseUrl}/courses/delete?id=${coursedetails.id}`);
-  }
-
-  public getCourseById(id: number): Observable<CourseDetailsFake> {
-    return of(this.coursesFake.find((courseDetails) => courseDetails.idFake === id));
   }
 
 }

@@ -27,14 +27,13 @@ module.exports = (server) => {
 		const query = url_parts.query;
 		const	courseName = query.course;
 		let	courses = server.db.getState().courses;
-		const foundCourse = courses.find((course) => 
-			course.name.toLowerCase().startsWith(courseName.toLowerCase())
+		const foundCourses = courses.filter((course) => 
+			course.name.toLowerCase().indexOf(courseName.toLowerCase()) > -1
 		);
-		courses = foundCourse ? [foundCourse] : [];
-		if(!courses.length) {
-			courses = server.db.getState().courses.slice(0, 10);
+		if(!foundCourses.length) {
+			foundCourses = server.db.getState().courses.slice(0, 10);
 		}
-		res.json(courses);
+		res.json(foundCourses);
 	});
 
 	router.get('/courses/delete', (req, res, next) => {
