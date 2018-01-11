@@ -4,10 +4,18 @@ import { CourseDetailsFake } from './course-details-fake.model';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { from } from 'rxjs/observable/from';
-import { map, toArray, concatMap } from 'rxjs/operators';
-import { Response, Request, RequestMethod, RequestOptions } from '@angular/http';
+import { map, concatMap, toArray } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
-import { AuthorizedHttp } from '../shared/authorized.http.service';
+import { HttpClient } from '@angular/common/http';
+
+interface ServerCourseDetails {
+  id: number;
+  name: number;
+  length: number;
+  date: string;
+  description: string;
+  isTopRated: boolean;
+}
 
 @Injectable()
 export class CoursesService {
@@ -17,7 +25,7 @@ export class CoursesService {
   private coursesFake: CourseDetailsFake[];
   private baseUrl = 'http://localhost:3004';
 
-  constructor(private http: AuthorizedHttp) {
+  constructor(private http: HttpClient) {
     this.coursesFake = [];
   }
 
@@ -30,13 +38,10 @@ export class CoursesService {
   }
 
   public getList(start: number, count: number) {
-    const requestOptions = new RequestOptions();
-    requestOptions.url = `${this.baseUrl}/courses?start=${start}&count=${count}`;
-    requestOptions.method = RequestMethod.Get;
-    const request = new Request(requestOptions);
-
     this.convertServerSideResponse(
-      this.http.request(request)
+      this.http.get<ServerCourseDetails[]>(
+        `${this.baseUrl}/courses?start=${start}&count=${count}`
+      )
     )
     .subscribe((courseDetails: CourseDetails[]) => {
       if (start === 0) {
@@ -47,10 +52,14 @@ export class CoursesService {
   }
 
   public findCourse(name: string) {
-    this.convertServerSideResponse(this.http.get(`${this.baseUrl}/courses/find?course=${name}`))
-      .subscribe((courseDetails: CourseDetails[]) => {
-        this.cachedCourses$.next(courseDetails);
-      });
+    this.convertServerSideResponse(
+      this.http.get<ServerCourseDetails[]>(
+        `${this.baseUrl}/courses/find?course=${name}`
+      )
+    )
+    .subscribe((courseDetails: CourseDetails[]) => {
+      this.cachedCourses$.next(courseDetails);
+    });
   }
 
   private updateCache(courseDetails: CourseDetails[]) {
@@ -58,10 +67,9 @@ export class CoursesService {
     this.cachedCourses$.next(this.cachedCourses);
   }
 
-  private convertServerSideResponse(httpResponse: Observable<any>): Observable<CourseDetails[]> {
+  private convertServerSideResponse(httpResponse: Observable<ServerCourseDetails[]>): Observable<CourseDetails[]> {
     return httpResponse.pipe(
-      map((response: Response) => response.json()),
-      concatMap((dbModelArray: any[]) => from(dbModelArray)),
+      concatMap((dbModelArray: ServerCourseDetails[]) => from(dbModelArray)),
       map((dbModel: any) => new CourseDetails(
         dbModel.id,
         dbModel.name,

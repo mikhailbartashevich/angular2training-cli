@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpModule, RequestOptions, XHRBackend } from '@angular/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedFooterComponent } from './shared-footer/shared-footer.component';
 import { SharedHeaderComponent } from './shared-header/shared-header.component';
 import { SharedLoaderBlockComponent } from './shared-loader-block/shared-loader-block.component';
 import { TimePipe } from './time.pipe';
 import { AuthService } from './auth.service';
 import { LoaderBlockService } from './loader-block.service';
-import { AuthorizedHttp } from './authorized.http.service';
+import { AuthHttpInterceptor } from './auth.http.interceptor';
 
 @NgModule({
   imports: [
     CommonModule,
-    HttpModule
+    HttpClientModule
   ],
   declarations: [
     SharedFooterComponent,
@@ -24,11 +24,9 @@ import { AuthorizedHttp } from './authorized.http.service';
     AuthService,
     LoaderBlockService,
     {
-      provide: AuthorizedHttp,
-      useFactory: (backend: XHRBackend, options: RequestOptions) => {
-        return new AuthorizedHttp(backend, options);
-      },
-      deps: [XHRBackend, RequestOptions]
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHttpInterceptor,
+      multi: true,
     }
   ],
   exports: [
