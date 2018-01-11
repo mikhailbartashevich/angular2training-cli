@@ -27,7 +27,7 @@ module.exports = (server) => {
 		const query = url_parts.query;
 		const	courseName = query.course;
 		let	courses = server.db.getState().courses;
-		const foundCourses = courses.filter((course) => 
+		let foundCourses = courses.filter((course) => 
 			course.name.toLowerCase().indexOf(courseName.toLowerCase()) > -1
 		);
 		if(!foundCourses.length) {
