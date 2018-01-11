@@ -8,17 +8,21 @@ import { TimePipe } from './time.pipe';
 import { AuthService } from './auth.service';
 import { LoaderBlockService } from './loader-block.service';
 import { AuthHttpInterceptor } from './auth.http.interceptor';
+import { FormsModule } from '@angular/forms';
+import { ValidateDateFormatDirective } from './validators/date-validator.directive';
 
 @NgModule({
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   declarations: [
     SharedFooterComponent,
     SharedHeaderComponent,
     SharedLoaderBlockComponent,
-    TimePipe
+    TimePipe,
+    ValidateDateFormatDirective
   ],
   providers: [
     AuthService,
@@ -33,7 +37,8 @@ import { AuthHttpInterceptor } from './auth.http.interceptor';
     SharedFooterComponent,
     SharedHeaderComponent,
     SharedLoaderBlockComponent,
-    TimePipe
+    TimePipe,
+    ValidateDateFormatDirective
   ]
 })
 export class SharedModule { }

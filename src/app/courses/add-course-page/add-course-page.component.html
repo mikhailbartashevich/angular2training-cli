@@ -40,7 +40,12 @@
           </div>
           <div class="form-control">
             <label for="date">Date TODO</label>
-            <input id="date" type="date"/>
+            <input 
+                id="date"
+                type="text"
+                name="creationDateMs"
+                appValidateDateFormat
+                [(ngModel)]="courseDetails.creationDateMs"/>
           </div>
           <div class="form-control">
             <label for="duration">Duration (min) TODO</label>
