@@ -11,6 +11,8 @@ import { AuthHttpInterceptor } from './auth.http.interceptor';
 import { FormsModule } from '@angular/forms';
 import { ValidateDateFormatDirective } from './validators/date-validator.directive';
 import { DateControlComponent } from './controls/date-control.component';
+import { DurationControlComponent } from './controls/duration-control.component';
+import { ValidateNumberDirective } from './validators/number-validator.directive';
 
 @NgModule({
   imports: [
@@ -24,7 +26,9 @@ import { DateControlComponent } from './controls/date-control.component';
     SharedLoaderBlockComponent,
     TimePipe,
     ValidateDateFormatDirective,
-    DateControlComponent
+    ValidateNumberDirective,
+    DateControlComponent,
+    DurationControlComponent
   ],
   providers: [
     AuthService,
@@ -41,7 +45,9 @@ import { DateControlComponent } from './controls/date-control.component';
     SharedLoaderBlockComponent,
     TimePipe,
     ValidateDateFormatDirective,
-    DateControlComponent
+    ValidateNumberDirective,
+    DateControlComponent,
+    DurationControlComponent
   ]
 })
 export class SharedModule { }

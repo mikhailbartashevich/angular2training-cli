@@ -47,12 +47,12 @@
                 [(ngModel)]="courseDetails.creationDateMs"></app-date-control>
           </div>
           <div class="form-control">
-            <label for="duration">Duration (min) TODO</label>
-            <input 
+            <label for="duration">Duration (min)</label>
+            <app-duration-control 
                 id="duration"
                 name="durationMs"
                 type="number"
-                [(ngModel)]="courseDetails.durationMs"/>
+                [(ngModel)]="courseDetails.durationMs"></app-duration-control>
           </div>
           <div class="form-control">
             <label for="authors">Authors TODO</label>
