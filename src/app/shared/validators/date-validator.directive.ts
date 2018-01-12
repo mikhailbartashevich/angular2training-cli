@@ -1,4 +1,4 @@
-import { Directive, forwardRef } from '@angular/core';
+import { Directive, forwardRef, Input } from '@angular/core';
 import { NG_VALIDATORS, FormControl, Validator } from '@angular/forms';
 import { validateDateFormat } from './date.validator';
 
@@ -14,8 +14,10 @@ import { validateDateFormat } from './date.validator';
 })
 export class ValidateDateFormatDirective implements Validator {
 
+  @Input() dateFormat = '';
+
   validate(c: FormControl) {
-    return validateDateFormat(c);
+    return validateDateFormat(c, this.dateFormat);
   }
 
 }
