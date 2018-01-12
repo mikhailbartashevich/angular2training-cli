@@ -30,40 +30,24 @@ interface UpdateResponse {
 
 @Injectable()
 export class CoursesService {
-
-  private cachedCourses: CourseDetails[] = [];
-  private cachedCourses$ = new Subject<CourseDetails[]>();
   private baseUrl = 'http://localhost:3004';
 
   constructor(private http: HttpClient) {}
 
-  public getCachedCourses(): Subject<CourseDetails[]>  {
-    return this.cachedCourses$;
-  }
-
-  public getList(start: number, count: number) {
-    this.convertServerSideResponse(
+  public getList(start: number, count: number): Observable<CourseDetails[]>  {
+    return this.convertServerSideResponse(
       this.http.get<ServerCourseDetails[]>(
         `${this.baseUrl}/courses?start=${start}&count=${count}`
       )
-    )
-    .subscribe((courseDetails: CourseDetails[]) => {
-      if (start === 0) {
-        this.cachedCourses = [];
-      }
-      this.updateCache(courseDetails);
-    });
+    );
   }
 
-  public findCourse(name: string) {
-    this.convertServerSideResponse(
+  public findCourses(name: string) {
+    return this.convertServerSideResponse(
       this.http.get<ServerCourseDetails[]>(
         `${this.baseUrl}/courses/find?course=${name}`
       )
-    )
-    .subscribe((courseDetails: CourseDetails[]) => {
-      this.cachedCourses$.next(courseDetails);
-    });
+    );
   }
 
   public createCourse(coursedetails: CourseDetails): Observable<CreateResponse> {
@@ -76,11 +60,6 @@ export class CoursesService {
 
   public removeCourse(coursedetails: CourseDetails): Observable<DeleteResponse> {
     return this.http.get<DeleteResponse>(`${this.baseUrl}/courses/delete?id=${coursedetails.id}`);
-  }
-
-  private updateCache(courseDetails: CourseDetails[]) {
-    this.cachedCourses = this.cachedCourses.concat(courseDetails);
-    this.cachedCourses$.next(this.cachedCourses);
   }
 
   private convertServerSideResponse(httpResponse: Observable<ServerCourseDetails[]>): Observable<CourseDetails[]> {

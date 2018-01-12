@@ -4,6 +4,7 @@ import { CourseDetails } from '../course-details.model';
 import { LoaderBlockService } from '../../shared/loader-block.service';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-course-page',
@@ -13,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class CoursePageComponent implements OnInit, OnDestroy {
 
-  public courses$: Subject<CourseDetails[]>;
+  public courses$: Observable<CourseDetails[]>;
   private subject: Subject<CourseDetails[]> = new Subject();
   private start = 0;
   private count = 10;
@@ -24,13 +25,18 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit() {
-    this.courses$ = this.coursesService.getCachedCourses();
-    this.coursesService.getList(this.start, this.count);
+    // TODO: Is it ok to re-assign observable?
+    this.courses$ = this.coursesService.getList(this.start, this.count);
   }
 
-  public onLoadMoreCoursesButtonClick() {
+  public onPreviousCoursesButtonClick() {
+    this.start -= 10;
+    this.courses$ = this.coursesService.getList(this.start, this.count);
+  }
+
+  public onNextCoursesButtonClick() {
     this.start += 10;
-    this.coursesService.getList(this.start, this.count);
+    this.courses$ = this.coursesService.getList(this.start, this.count);
   }
 
   public onDeleteCourse(course: CourseDetails) {
@@ -41,12 +47,12 @@ export class CoursePageComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.loaderBlockService.hide();
-        this.coursesService.getList(0, this.count);
+        this.courses$ = this.coursesService.getList(0, this.count);
       });
   }
 
   public onFindCourse(courseName: string) {
-    this.coursesService.findCourse(courseName);
+    this.courses$ = this.coursesService.findCourses(courseName);
   }
 
   public ngOnDestroy() {
