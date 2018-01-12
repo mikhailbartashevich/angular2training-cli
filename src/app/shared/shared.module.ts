@@ -10,6 +10,7 @@ import { LoaderBlockService } from './loader-block.service';
 import { AuthHttpInterceptor } from './auth.http.interceptor';
 import { FormsModule } from '@angular/forms';
 import { ValidateDateFormatDirective } from './validators/date-validator.directive';
+import { DateControlComponent } from './controls/date-control.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { ValidateDateFormatDirective } from './validators/date-validator.directi
     SharedHeaderComponent,
     SharedLoaderBlockComponent,
     TimePipe,
-    ValidateDateFormatDirective
+    ValidateDateFormatDirective,
+    DateControlComponent
   ],
   providers: [
     AuthService,
@@ -38,7 +40,8 @@ import { ValidateDateFormatDirective } from './validators/date-validator.directi
     SharedHeaderComponent,
     SharedLoaderBlockComponent,
     TimePipe,
-    ValidateDateFormatDirective
+    ValidateDateFormatDirective,
+    DateControlComponent
   ]
 })
 export class SharedModule { }

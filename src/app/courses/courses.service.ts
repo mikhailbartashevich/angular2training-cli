@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { from } from 'rxjs/observable/from';
 import { map, concatMap, toArray } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 import { HttpClient } from '@angular/common/http';
 
 interface ServerCourseDetails {
@@ -42,7 +41,7 @@ export class CoursesService {
     );
   }
 
-  public findCourses(name: string) {
+  public findCourses(name: string): Observable<CourseDetails[]>  {
     return this.convertServerSideResponse(
       this.http.get<ServerCourseDetails[]>(
         `${this.baseUrl}/courses/find?course=${name}`

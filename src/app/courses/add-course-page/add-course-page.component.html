@@ -39,13 +39,11 @@
             {{description?.errors | json}}
           </div>
           <div class="form-control">
-            <label for="date">Date TODO</label>
-            <input 
+            <label for="date">Date</label>
+            <app-date-control 
                 id="date"
-                type="text"
                 name="creationDateMs"
-                appValidateDateFormat
-                [(ngModel)]="courseDetails.creationDateMs"/>
+                [(ngModel)]="courseDetails.creationDateMs"></app-date-control>
           </div>
           <div class="form-control">
             <label for="duration">Duration (min) TODO</label>

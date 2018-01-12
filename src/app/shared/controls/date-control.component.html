@@ -1,0 +1,6 @@
+<input 
+    type="text" 
+    (change)="setValue($event)"
+    [disabled]="isDisabled" 
+    [(ngModel)]="dateString" 
+    appValidateDateFormat/>

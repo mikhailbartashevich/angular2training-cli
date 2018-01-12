@@ -30,7 +30,7 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   }
 
   public onPreviousCoursesButtonClick() {
-    this.start -= 10;
+    this.start = this.start >= 10 ? this.start - 10 : 0;
     this.courses$ = this.coursesService.getList(this.start, this.count);
   }
 
