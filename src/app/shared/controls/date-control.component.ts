@@ -23,6 +23,7 @@ export class DateControlComponent implements OnInit, ControlValueAccessor {
 
   public dateString = '';
   @Input() public dateMs = 0;
+  @Input('dateFormat') public dateFormat = 'dd/mm/yyy';
 
   public isDisabled: boolean;
   public currentValue: any;
