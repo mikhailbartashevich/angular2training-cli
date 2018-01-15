@@ -13,6 +13,7 @@ import { ValidateDateFormatDirective } from './validators/date-validator.directi
 import { DateControlComponent } from './controls/date-control.component';
 import { DurationControlComponent } from './controls/duration-control.component';
 import { ValidateNumberDirective } from './validators/number-validator.directive';
+import { AuthorsControlComponent } from './controls/authors-control.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { ValidateNumberDirective } from './validators/number-validator.directive
     ValidateDateFormatDirective,
     ValidateNumberDirective,
     DateControlComponent,
-    DurationControlComponent
+    DurationControlComponent,
+    AuthorsControlComponent
   ],
   providers: [
     AuthService,
@@ -47,7 +49,8 @@ import { ValidateNumberDirective } from './validators/number-validator.directive
     ValidateDateFormatDirective,
     ValidateNumberDirective,
     DateControlComponent,
-    DurationControlComponent
+    DurationControlComponent,
+    AuthorsControlComponent
   ]
 })
 export class SharedModule { }

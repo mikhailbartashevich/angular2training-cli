@@ -28,7 +28,7 @@ export class DateControlComponent implements OnInit, ControlValueAccessor, Valid
 
   public dateString = '';
   @Input() public dateMs = 0;
-  @Input('dateFormat') public dateFormat = 'dd/mm/yyy';
+  @Input('dateFormat') public dateFormat = 'mm/dd/yyy';
 
   public isDisabled: boolean;
   private onChange = (value: any) => {};

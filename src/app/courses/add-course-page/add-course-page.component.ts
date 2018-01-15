@@ -14,14 +14,16 @@ export class AddCoursePageComponent {
   @Input() public courseDetails: CourseDetails;
   @Output() public saveCourse = new EventEmitter<CourseDetails>();
 
+  public availableAuthors = ['Test Author', 'Test Author1', 'Test Author2'];
+
   constructor(private router: Router, private coursesService: CoursesService) {
-    this.courseDetails = new CourseDetails(0, null, 0, 0, null, false);
+    this.courseDetails = new CourseDetails(0, null, 0, 0, null, false, []);
   }
 
   public onFormSubmit(form: NgForm) {
     if (form.valid) {
-      this.coursesService.createCourse(this.courseDetails);
-      // .subscribe(() => this.router.navigate(['courses']));
+      this.coursesService.createCourse(this.courseDetails)
+      .subscribe(() => this.router.navigate(['courses']));
     }
   }
 

@@ -43,7 +43,6 @@
             <app-date-control 
                 id="date"
                 name="creationDateMs"
-                dateFormat="dd/mm/yyyy"
                 required
                 #creationDateMs="ngModel"
                 [(ngModel)]="courseDetails.creationDateMs"></app-date-control>
@@ -69,8 +68,18 @@
                 {{durationMs?.errors | json}}
           </div>
           <div class="form-control">
-            <label for="authors">Authors TODO</label>
-            <textarea id="authors"></textarea>
+            <label for="authors">Authors</label>
+            <app-authors-control 
+                name="authors"
+                required
+                #authors="ngModel"
+                [(ngModel)]="courseDetails.authors"
+                [availableAuthors]="availableAuthors"></app-authors-control>
+          </div>
+          <div 
+              class="form-control error-display"
+              *ngIf="authors?.invalid && authors.dirty">
+                {{authors?.errors | json}}
           </div>
         </fieldset>
 

@@ -1,18 +1,37 @@
 import { Injectable } from '@angular/core';
 import { CourseDetails } from './course-details.model';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 import { from } from 'rxjs/observable/from';
 import { map, concatMap, toArray } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
-interface ServerCourseDetails {
+class ServerCourseDetails {
   id: number;
-  name: number;
+  name: string;
   length: number;
   date: string;
   description: string;
   isTopRated: boolean;
+  authors: string[];
+
+
+  constructor(
+    id: number,
+    title: string,
+    durationMs: number,
+    creationDate: string,
+    description: string,
+    topRated: boolean,
+    authors: string[]
+  ) {
+    this.id = id;
+    this.name = title;
+    this.length = durationMs;
+    this.date = creationDate;
+    this.description = description;
+    this.isTopRated = topRated;
+    this.authors = authors;
+  }
 }
 
 interface DeleteResponse {
@@ -50,15 +69,29 @@ export class CoursesService {
   }
 
   public createCourse(coursedetails: CourseDetails): Observable<CreateResponse> {
-    return of({id: '1'});
+    const course = this.transformToServerSideCourse_(coursedetails);
+    return this.http.post<CreateResponse>(`${this.baseUrl}/courses/new`, {course});
   }
 
   public updateCourse(coursedetails: CourseDetails): Observable<UpdateResponse> {
-    return of({id: '1'});
+    const course = this.transformToServerSideCourse_(coursedetails);
+    return this.http.post<UpdateResponse>(`${this.baseUrl}/courses/update`, {course});
   }
 
   public removeCourse(coursedetails: CourseDetails): Observable<DeleteResponse> {
     return this.http.get<DeleteResponse>(`${this.baseUrl}/courses/delete?id=${coursedetails.id}`);
+  }
+
+  transformToServerSideCourse_(course: CourseDetails): ServerCourseDetails {
+    return new ServerCourseDetails(
+      course.id,
+      course.title,
+      course.durationMs / 60 / 1000,
+      new Date(course.creationDateMs).toLocaleDateString(),
+      course.description,
+      course.topRated,
+      course.authors
+    );
   }
 
   private convertServerSideResponse(httpResponse: Observable<ServerCourseDetails[]>): Observable<CourseDetails[]> {
@@ -70,7 +103,8 @@ export class CoursesService {
         dbModel.length * 60 * 1000,
         new Date(dbModel.date).getTime(),
         dbModel.description,
-        dbModel.isTopRated
+        dbModel.isTopRated,
+        dbModel.authors
       )),
       toArray()
     );

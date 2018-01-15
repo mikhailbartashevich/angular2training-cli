@@ -13,7 +13,8 @@ export class CourseDetails {
     durationMs: number,
     creationDateMs: number,
     description: string,
-    topRated: boolean
+    topRated: boolean,
+    authors: string[]
   ) {
     this.id = id;
     this.title = title;

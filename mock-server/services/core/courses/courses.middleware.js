@@ -11,9 +11,8 @@ module.exports = (server) => {
 			to = +query.start + +query.count,
 			sort = query.sort,
 			queryStr = query.query,
-			courses = server.db.getState().courses;
-		console.log(sort);
-		console.log(queryStr);
+			courses = server.db.get('courses').sortBy('date').value();
+
 		if (courses.length < to) {
 			to = courses.length;
 		}
@@ -43,6 +42,24 @@ module.exports = (server) => {
 		server.db.get('courses').remove({id: +id}).write();
 		res.json({
 			deleted: id
+		});
+	});
+
+	router.post('/courses/new', (req, res, next) => {
+		const course = req.body.course;
+		const id = server.db.getState().courses.length + 8324;
+		course.id = id;
+		server.db.get('courses').push(course).write()
+		res.json({
+			id: id
+		});
+	});
+
+	router.post('/courses/update', (req, res, next) => {
+		const course = req.body.course;
+		server.db.get('courses').find({id: +course.id}).assign(course).write();
+		res.json({
+			id: course.id
 		});
 	});
 	

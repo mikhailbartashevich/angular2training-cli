@@ -1,0 +1,8 @@
+<fieldset>
+  <div *ngFor="let choice of availableAuthors">
+    <label>
+      <input type="checkbox" [value]="choice" (change)="onCheckChange($event)">
+      {{choice}}
+    </label>
+  </div>
+</fieldset>
