@@ -45,6 +45,10 @@ label {
   width: 400px;
 }
 
+app-duration-control, app-date-control {
+  display: block;
+}
+
 .error-display {
   color: red;
 }

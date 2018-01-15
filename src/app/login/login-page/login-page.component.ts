@@ -22,7 +22,7 @@ export class LoginPageComponent implements OnDestroy {
     private router: Router
   ) {}
 
-  public onEnterButtonClick() {
+  public onFormSubmit() {
     this.loaderBlockService.show();
     this.authService.login(this.user)
     .pipe (

@@ -1,19 +1,42 @@
 <div class="container">
   <app-shared-header></app-shared-header>
   <div class="login-form">
-    <div>
-      <label for="login">Login</label>
-      <input id="login" type="text" [(ngModel)]="user.login"/>
-    </div>
+    <form #form="ngForm" (submit)="onFormSubmit(form)">
+      <fieldset>
+        <div>
+          <label for="login">Login (required)</label>
+          <input 
+              name="login"
+              type="text"
+              required
+              #login="ngModel"
+              [(ngModel)]="user.login"/>
+        </div>
+        <div 
+            class="form-control error-display"
+            *ngIf="login?.invalid && login.dirty">
+          {{login?.errors | json}}
+        </div>
+        <div>
+          <label for="password">Password (required)</label>
+          <input 
+              name="password"
+              type="password"
+              required
+              #password="ngModel"
+              [(ngModel)]="user.password"/>
+        </div>
+        <div 
+            class="form-control error-display"
+            *ngIf="password?.invalid && password.dirty">
+          {{password?.errors | json}}
+        </div>
 
-    <div>
-      <label for="password">Password</label>
-      <input id="password" type="password" [(ngModel)]="user.password"/>
-    </div>
-
-    <div>
-      <input type="button" value="Enter" (click)="onEnterButtonClick()"/>
-    </div>
+        <div>
+          <input type="submit" value="Enter" [disabled]="form.invalid || form.pristine"/>
+        </div>
+      </fieldset>
+    </form>
   </div>
   <app-shared-footer></app-shared-footer>
 </div>

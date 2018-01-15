@@ -44,25 +44,29 @@
                 id="date"
                 name="creationDateMs"
                 dateFormat="dd/mm/yyyy"
+                required
+                #creationDateMs="ngModel"
                 [(ngModel)]="courseDetails.creationDateMs"></app-date-control>
+          </div>
             <div 
-              class="form-control error-display"
-              *ngIf="creationDateMs?.invalid && creationDateMs.dirty">
+                class="form-control error-display"
+                *ngIf="creationDateMs?.invalid && creationDateMs.dirty">
                 {{creationDateMs?.errors | json}}
             </div>
-          </div>
           <div class="form-control">
             <label for="duration">Duration (min)</label>
-            <app-duration-control 
+            <app-duration-control
                 id="duration"
                 name="durationMs"
                 type="number"
+                required
+                #durationMs="ngModel"
                 [(ngModel)]="courseDetails.durationMs"></app-duration-control>
-              <div 
-                class="form-control error-display"
-                *ngIf="durationMs?.invalid && durationMs.dirty">
-                  {{durationMs?.errors | json}}
-              </div>
+          </div>
+          <div 
+              class="form-control error-display"
+              *ngIf="durationMs?.invalid && durationMs.dirty">
+                {{durationMs?.errors | json}}
           </div>
           <div class="form-control">
             <label for="authors">Authors TODO</label>

@@ -5,7 +5,8 @@ export function validateDateFormat(c: FormControl, dateFormat: string) {
   console.log(dateFormat);
   return DATE_REGEXP.test(c.value) ? null : {
     validateDateFormat: {
-      valid: false
+      valid: false,
+      validFormat: dateFormat
     }
   };
 }

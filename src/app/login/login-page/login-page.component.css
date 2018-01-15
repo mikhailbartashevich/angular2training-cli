@@ -26,11 +26,23 @@ app-shared-header {
 
 .login-form input, .login-form label  {
   display: inline-block;
-  width: 200px;
+  width: 100%;
 }
 
 .login-form input[type="button"] {
   margin: 0 auto;
   display: block;
-  width: 200px;
+  width: 100%;
+}
+
+.error-display {
+  color: red;
+}
+
+.ng-invalid.ng-dirty {
+  border: 1px solid red;
+}
+
+form.ng-invalid.ng-dirty {
+  border: none;
 }
