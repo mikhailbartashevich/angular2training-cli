@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, Validator, FormControl } from '@angular/forms';
+import { validateDateFormat } from '../validators/date.validator';
 
 interface TargetValue {
   value: string;
@@ -17,21 +18,30 @@ interface AppEvent {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => DateControlComponent),
     multi: true
+  }, {
+    provide: NG_VALIDATORS,
+    useExisting: forwardRef(() => DateControlComponent),
+    multi: true
   }]
 })
-export class DateControlComponent implements OnInit, ControlValueAccessor {
+export class DateControlComponent implements OnInit, ControlValueAccessor, Validator {
 
   public dateString = '';
   @Input() public dateMs = 0;
   @Input('dateFormat') public dateFormat = 'dd/mm/yyy';
 
   public isDisabled: boolean;
-  public currentValue: any;
   private onChange = (value: any) => {};
 
   constructor() {}
 
   ngOnInit() {}
+
+  validate(c: FormControl) {
+    const dateStringFC = new FormControl();
+    dateStringFC.setValue(this.dateString);
+    return validateDateFormat(dateStringFC, this.dateFormat);
+  }
 
   setValue(item: AppEvent) {
     this.dateString = item.target.value;

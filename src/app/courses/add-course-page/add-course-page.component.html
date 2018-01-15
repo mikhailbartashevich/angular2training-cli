@@ -19,7 +19,7 @@
           </div>
           <div 
               class="form-control error-display"
-              *ngIf="name.invalid && name.dirty">
+              *ngIf="name?.invalid && name.dirty">
             {{name?.errors | json}}
           </div>
           <div class="form-control">
@@ -35,7 +35,7 @@
           </div>
           <div 
               class="form-control error-display"
-              *ngIf="description.invalid && description.dirty">
+              *ngIf="description?.invalid && description.dirty">
             {{description?.errors | json}}
           </div>
           <div class="form-control">
@@ -45,6 +45,11 @@
                 name="creationDateMs"
                 dateFormat="dd/mm/yyyy"
                 [(ngModel)]="courseDetails.creationDateMs"></app-date-control>
+            <div 
+              class="form-control error-display"
+              *ngIf="creationDateMs?.invalid && creationDateMs.dirty">
+                {{creationDateMs?.errors | json}}
+            </div>
           </div>
           <div class="form-control">
             <label for="duration">Duration (min)</label>
@@ -53,6 +58,11 @@
                 name="durationMs"
                 type="number"
                 [(ngModel)]="courseDetails.durationMs"></app-duration-control>
+              <div 
+                class="form-control error-display"
+                *ngIf="durationMs?.invalid && durationMs.dirty">
+                  {{durationMs?.errors | json}}
+              </div>
           </div>
           <div class="form-control">
             <label for="authors">Authors TODO</label>

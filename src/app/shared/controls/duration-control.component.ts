@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, Validator, FormControl } from '@angular/forms';
+import { validateNumber } from '../validators/number.validator';
 
 interface TargetValue {
   value: string;
@@ -17,9 +18,13 @@ interface AppEvent {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => DurationControlComponent),
     multi: true
+  }, {
+    provide: NG_VALIDATORS,
+    useExisting: forwardRef(() => DurationControlComponent),
+    multi: true
   }]
 })
-export class DurationControlComponent implements OnInit, ControlValueAccessor {
+export class DurationControlComponent implements OnInit, ControlValueAccessor, Validator {
 
   public durationMinutes = 0;
   @Input() public durationMs = 0;
@@ -30,6 +35,12 @@ export class DurationControlComponent implements OnInit, ControlValueAccessor {
   constructor() {}
 
   ngOnInit() {}
+
+  validate(c: FormControl) {
+    const minutesFC = new FormControl();
+    minutesFC.setValue(this.durationMinutes);
+    return validateNumber(minutesFC);
+  }
 
   setValue(item: AppEvent) {
     this.durationMinutes = Number.isInteger(+item.target.value) ? +item.target.value : this.durationMinutes;
