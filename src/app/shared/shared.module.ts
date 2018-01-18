@@ -16,12 +16,14 @@ import { ValidateNumberDirective } from './validators/number-validator.directive
 import { AuthorsControlComponent } from './controls/authors-control.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { AuthGuard } from './auth.guard';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ],
   declarations: [
     SharedFooterComponent,

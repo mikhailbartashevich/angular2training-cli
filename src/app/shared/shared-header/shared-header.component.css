@@ -19,5 +19,9 @@ img {
 .link {
   text-decoration: underline;
   color: blue;
-  cursor: pointer
+  cursor: pointer;
+}
+
+.breadcrumb {
+  text-transform: capitalize;
 }

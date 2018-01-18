@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { from } from 'rxjs/observable/from';
 import { map, concatMap, toArray } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { filter } from 'rxjs/operators/filter';
 
 class ServerCourseDetails {
   id: number;
@@ -71,7 +72,8 @@ export class CoursesService {
   public getCourseById(id: string): Observable<CourseDetails> {
     return this.http.get<ServerCourseDetails>(`${this.baseUrl}/courses/get?id=${id}`)
       .pipe(
-        map((dbModel: any) => new CourseDetails(
+        filter((dbModel: ServerCourseDetails) => dbModel != null),
+        map((dbModel: ServerCourseDetails) => new CourseDetails(
             dbModel.id,
             dbModel.name,
             dbModel.length * 60 * 1000,

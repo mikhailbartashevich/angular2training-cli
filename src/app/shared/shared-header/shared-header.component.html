@@ -1,14 +1,22 @@
 <div class="container">
-  <div class="logo">
-      <div class="image">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png"/>
-      </div>
-      <div class="title">Courses</div>
-  </div>
-  <div *ngIf="user$ | async as user">
-      <div>{{user.name.first}} {{user.name.last}}</div>
-      <div>
-          <div class="link" (click)="onLogoffClick()">logoff</div>
-      </div>
-  </div>
+    <div class="logo">
+        <div class="image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png"/>
+        </div>
+        <div class="title">
+            <span *ngFor="let item of breadcrumbs; let last = last;">
+                <a class="breadcrumb" *ngIf="!last" [routerLink]="item.path">{{item.name}}</a>
+                <span *ngIf="!last">&gt;</span>
+            </span>
+            <span class="breadcrumb">
+                {{computeRouteName(breadcrumbs[1]?.name) | async}}
+            </span>
+        </div>
+    </div>
+    <div *ngIf="user$ | async as user">
+        <div>{{user.name.first}} {{user.name.last}}</div>
+        <div>
+            <div class="link" (click)="onLogoffClick()">logoff</div>
+        </div>
+    </div>
 </div>

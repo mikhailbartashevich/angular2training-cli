@@ -12,3 +12,14 @@ courses-page {
 a.active {
   background-color: gray;
 }
+
+app-shared-footer {
+  margin: 20px auto;
+  text-align: center;
+  width: 100%;
+}
+
+app-shared-header {
+  display: block;
+  margin: 20px;
+}

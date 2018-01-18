@@ -1,45 +1,64 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../user.model';
 import { AuthService } from '../auth.service';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
-import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import { ActivatedRoute, Router, UrlSegment, NavigationEnd, Event } from '@angular/router';
+import { filter, map } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+import { CoursesService } from '../../courses/courses.service';
+import { CourseDetails } from '../../courses/course-details.model';
+
+interface Breadcrumb {
+  path: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-shared-header',
   templateUrl: './shared-header.component.html',
   styleUrls: ['./shared-header.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedHeaderComponent implements OnInit, OnDestroy {
+export class SharedHeaderComponent implements OnInit {
 
   public user$: Observable<User>;
-  public subject: Subject<any> = new Subject();
+  public breadcrumbs: Breadcrumb[] = [];
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private coursesService: CoursesService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {
+    this.router.events
+      .pipe(filter((event: Event) => event instanceof NavigationEnd))
+      .subscribe((event: Event) => {
+        for (const child of this.activatedRoute.root.children) {
+          this.breadcrumbs = child.snapshot.url
+            .map((url: UrlSegment, index: number, urls: UrlSegment[]) => ({
+                path: urls.slice(0, index + 1).map(segment => segment.path).join('/'),
+                name: url.path
+              })
+            );
+        }
+      });
+  }
+
+  computeRouteName(name: string): Observable<string> {
+    if (Number.isInteger(+name)) {
+      return of(`Course ${name}`);
+      // this.coursesService.getCourseById(name)
+      //   .pipe(
+      //     map((course: CourseDetails) => course.title)
+      //   );
+    }
+    return of(name);
+  }
 
   public ngOnInit() {
     this.user$ = this.authService.getUserInfo();
-    this.user$
-      .pipe (
-        takeUntil(this.subject)
-      )
-      .subscribe((user: User) => {
-        if (!user) {
-          this.router.navigate(['login']);
-        }
-      });
   }
 
   public onLogoffClick() {
     this.authService.logout();
   }
-
-  public ngOnDestroy() {
-    this.subject.next();
-    this.subject.complete();
-  }
-
 }
