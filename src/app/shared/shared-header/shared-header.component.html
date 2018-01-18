@@ -8,7 +8,7 @@
   <div *ngIf="user$ | async as user">
       <div>{{user.name.first}} {{user.name.last}}</div>
       <div>
-          <a href="#" (click)="onLogoffClick()">logoff</a>
+          <div class="link" (click)="onLogoffClick()">logoff</div>
       </div>
   </div>
 </div>

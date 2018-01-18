@@ -15,6 +15,7 @@ import { DurationControlComponent } from './controls/duration-control.component'
 import { ValidateNumberDirective } from './validators/number-validator.directive';
 import { AuthorsControlComponent } from './controls/authors-control.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { NotFoundPageComponent } from './not-found-page/not-found-page.component
   ],
   providers: [
     AuthService,
+    AuthGuard,
     LoaderBlockService,
     {
       provide: HTTP_INTERCEPTORS,

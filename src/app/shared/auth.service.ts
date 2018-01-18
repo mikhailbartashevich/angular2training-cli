@@ -34,12 +34,16 @@ export class AuthService {
   }
 
   public logout(): void {
-    localStorage.setItem('auth_token', null);
+    localStorage.removeItem('auth_token');
     this.userInfo.next(null);
   }
 
   public setToken(token: string): void {
     localStorage.setItem('auth_token', token);
+  }
+
+  public isAuthenticated(): boolean {
+   return localStorage.getItem('auth_token') != null;
   }
 
   public fetchUserInfo(): void {

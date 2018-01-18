@@ -15,3 +15,9 @@ img {
   align-items: center;
   display: flex;
 }
+
+.link {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer
+}
