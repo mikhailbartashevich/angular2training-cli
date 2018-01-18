@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from 
 import { CourseDetails } from '../course-details.model';
 import { MatDialog } from '@angular/material';
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-item',
@@ -13,7 +14,7 @@ export class CourseItemComponent {
   @Input() public courseDetails: CourseDetails;
   @Output() public deleteCourse = new EventEmitter<CourseDetails>();
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private router: Router) {}
 
   public onDeleteCourseButtonClick() {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
@@ -25,6 +26,10 @@ export class CourseItemComponent {
         this.deleteCourse.emit(this.courseDetails);
       }
     });
+  }
+
+  public onEditCourseButtonClick() {
+    this.router.navigate([`courses/${this.courseDetails.id}`]);
   }
 
 }

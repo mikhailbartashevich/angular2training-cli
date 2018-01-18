@@ -9,8 +9,8 @@ import {
 } from '@angular/material';
 import { CourseItemComponent } from './course-item/course-item.component';
 import { CourseListComponent } from './course-list/course-list.component';
-import { AddCoursePageComponent } from './add-course-page/add-course-page.component';
 import { CoursePageComponent } from './course-page/course-page.component';
+import { CoursesPageComponent } from './courses-page/courses-page.component';
 import { CourseToolboxComponent } from './course-toolbox/course-toolbox.component';
 import { SharedModule } from '../shared/shared.module';
 import { CoursesService } from './courses.service';
@@ -34,8 +34,8 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [
     CourseItemComponent,
     CourseListComponent,
-    AddCoursePageComponent,
     CoursePageComponent,
+    CoursesPageComponent,
     CourseToolboxComponent,
     DeleteConfirmationDialogComponent,
     DynamicBorderDirective,

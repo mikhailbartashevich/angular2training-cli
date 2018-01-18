@@ -7,15 +7,18 @@ import { AppComponent } from './app.component';
 import { LoginModule } from './login/login.module';
 import { CoursesModule } from './courses/courses.module';
 import { LoginPageComponent } from './login/login-page/login-page.component';
-import { AddCoursePageComponent } from './courses/add-course-page/add-course-page.component';
+import { CoursesPageComponent } from './courses/courses-page/courses-page.component';
 import { CoursePageComponent } from './courses/course-page/course-page.component';
 import { SharedModule } from './shared/shared.module';
+import { NotFoundPageComponent } from './shared/not-found-page/not-found-page.component';
 
 const Routes = [
   {path: '', component: LoginPageComponent},
-  {path: 'courses', component: CoursePageComponent},
-  {path: 'add-course', component: AddCoursePageComponent},
+  {path: 'courses', component: CoursesPageComponent},
+  {path: 'courses/new', component: CoursePageComponent},
+  {path: 'courses/:id', component: CoursePageComponent},
   {path: 'login', component: LoginPageComponent},
+  {path: '**', component: NotFoundPageComponent},
 ];
 
 @NgModule({

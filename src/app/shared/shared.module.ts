@@ -14,6 +14,7 @@ import { DateControlComponent } from './controls/date-control.component';
 import { DurationControlComponent } from './controls/duration-control.component';
 import { ValidateNumberDirective } from './validators/number-validator.directive';
 import { AuthorsControlComponent } from './controls/authors-control.component';
+import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { AuthorsControlComponent } from './controls/authors-control.component';
     ValidateNumberDirective,
     DateControlComponent,
     DurationControlComponent,
-    AuthorsControlComponent
+    AuthorsControlComponent,
+    NotFoundPageComponent
   ],
   providers: [
     AuthService,

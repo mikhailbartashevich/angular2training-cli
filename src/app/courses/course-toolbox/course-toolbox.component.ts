@@ -19,7 +19,7 @@ export class CourseToolboxComponent {
   }
 
   public onAddCourseButtonClick() {
-    this.router.navigate(['add-course']);
+    this.router.navigate(['courses/new']);
   }
 
 }

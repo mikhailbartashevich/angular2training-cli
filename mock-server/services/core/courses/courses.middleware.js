@@ -45,6 +45,14 @@ module.exports = (server) => {
 		});
 	});
 
+	router.get('/courses/get', (req, res, next) => {
+		const url_parts = url.parse(req.originalUrl, true);
+		const query = url_parts.query;
+		const	id = query.id;
+		const course = server.db.get('courses').find({id: +id}).value();
+		res.json(course);
+	});
+
 	router.post('/courses/new', (req, res, next) => {
 		const course = req.body.course;
 		const id = server.db.getState().courses.length + 8324;

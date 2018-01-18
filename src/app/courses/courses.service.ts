@@ -68,6 +68,22 @@ export class CoursesService {
     );
   }
 
+  public getCourseById(id: string): Observable<CourseDetails> {
+    return this.http.get<ServerCourseDetails>(`${this.baseUrl}/courses/get?id=${id}`)
+      .pipe(
+        map((dbModel: any) => new CourseDetails(
+            dbModel.id,
+            dbModel.name,
+            dbModel.length * 60 * 1000,
+            new Date(dbModel.date).getTime(),
+            dbModel.description,
+            dbModel.isTopRated,
+            dbModel.authors
+          )
+        )
+      );
+  }
+
   public createCourse(coursedetails: CourseDetails): Observable<CreateResponse> {
     const course = this.transformToServerSideCourse_(coursedetails);
     return this.http.post<CreateResponse>(`${this.baseUrl}/courses/new`, {course});
@@ -82,7 +98,7 @@ export class CoursesService {
     return this.http.get<DeleteResponse>(`${this.baseUrl}/courses/delete?id=${coursedetails.id}`);
   }
 
-  transformToServerSideCourse_(course: CourseDetails): ServerCourseDetails {
+  private transformToServerSideCourse_(course: CourseDetails): ServerCourseDetails {
     return new ServerCourseDetails(
       course.id,
       course.title,

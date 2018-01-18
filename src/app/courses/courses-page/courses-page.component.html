@@ -1,0 +1,12 @@
+<div class="container">
+  <app-shared-header></app-shared-header>
+  <app-course-toolbox (findCourse)="onFindCourse($event)"></app-course-toolbox>
+  <app-course-list [courses]="courses$ | async" (deleteCourse)="onDeleteCourse($event)"></app-course-list>
+  <div class="paging">
+    <input type="button" value="Previous courses" (click)="onPreviousCoursesButtonClick()"/>
+    <input type="button" value="Next courses" (click)="onNextCoursesButtonClick()"/>
+  </div>
+  <app-shared-footer></app-shared-footer>
+</div>
+
+<app-shared-loader-block></app-shared-loader-block>

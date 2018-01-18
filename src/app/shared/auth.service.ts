@@ -34,6 +34,7 @@ export class AuthService {
   }
 
   public logout(): void {
+    localStorage.setItem('auth_token', null);
     this.userInfo.next(null);
   }
 
