@@ -50,7 +50,7 @@ export class DateControlComponent implements OnInit, ControlValueAccessor, Valid
 
   writeValue(value: any): void {
     if (value) {
-      this.dateString = this.formattedDate_(value);
+      this.dateString = this.formattedDate_(new Date(value));
     }
   }
 

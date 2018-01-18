@@ -1,49 +1,61 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
 import { CourseDetails } from '../course-details.model';
-import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
 import { CoursesService } from '../courses.service';
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-course-page',
   templateUrl: './course-page.component.html',
   styleUrls: ['./course-page.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CoursePageComponent {
-  @Input() public courseDetails: CourseDetails;
+export class CoursePageComponent implements OnDestroy {
+  @Input() public courseDetails: CourseDetails = new CourseDetails(0, null, 0, 0, null, false, []);
   @Output() public saveCourse = new EventEmitter<CourseDetails>();
 
   public availableAuthors = ['Test Author', 'Test Author1', 'Test Author2'];
+  private subject: Subject<CourseDetails[]> = new Subject();
+  private url = '';
 
   constructor(
     private router: Router,
     private coursesService: CoursesService,
-    private route: ActivatedRoute
+    private activatedRoute: ActivatedRoute
   ) {
-    this.route.params
+    this.activatedRoute.url.subscribe(
+      (url: UrlSegment[]) => this.url = url[url.length - 1].path);
+    this.activatedRoute.params
     .pipe(
       map(param => param.id),
-      map(id => this.coursesService.getCourseById(id))
+      switchMap(id => this.coursesService.getCourseById(id)),
+      takeUntil(this.subject)
     )
-    .subscribe((courseDetails: any) => {
+    .subscribe((courseDetails: CourseDetails) => {
       this.courseDetails = courseDetails;
     });
-    this.courseDetails = new CourseDetails(0, null, 0, 0, null, false, []);
   }
 
   public onFormSubmit(form: NgForm) {
     if (form.valid) {
-      this.coursesService.createCourse(this.courseDetails)
-      .subscribe(() => this.router.navigate(['courses']));
+      if (this.url === 'new') {
+        this.coursesService.createCourse(this.courseDetails)
+        .subscribe(() => this.router.navigate(['courses']));
+      } else {
+        this.coursesService.updateCourse(this.courseDetails)
+        .subscribe(() => this.router.navigate(['courses']));
+      }
     }
   }
 
   public onCancelButtonClick() {
     this.router.navigate(['courses']);
+  }
+
+  public ngOnDestroy() {
+    this.subject.next();
+    this.subject.complete();
   }
 
 }

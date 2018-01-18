@@ -47,6 +47,10 @@ export class AuthorsControlComponent implements OnInit, ControlValueAccessor, Va
     this.onChange(this.selectedAuthors);
   }
 
+  isChecked(choice: string): boolean {
+    return this.selectedAuthors && this.selectedAuthors.indexOf(choice) > -1;
+  }
+
   validate(c: FormControl) {
     return this.selectedAuthors && this.selectedAuthors.length ? null : {
       validateAuthors: {
@@ -56,7 +60,9 @@ export class AuthorsControlComponent implements OnInit, ControlValueAccessor, Va
   }
 
   writeValue(value: any): void {
-    this.selectedAuthors = value;
+    if (value) {
+      this.selectedAuthors = value;
+    }
   }
 
   registerOnChange(fn: any): void {

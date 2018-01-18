@@ -22,5 +22,6 @@ export class CourseDetails {
     this.creationDateMs = creationDateMs;
     this.description = description;
     this.topRated = topRated;
+    this.authors = authors;
   }
 }
