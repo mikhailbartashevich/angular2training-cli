@@ -3,10 +3,10 @@ import { User } from '../user.model';
 import { AuthService } from '../auth.service';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, UrlSegment, NavigationEnd, Event } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
+import { filter/*,*map*/ } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
-import { CoursesService } from '../../courses/courses.service';
-import { CourseDetails } from '../../courses/course-details.model';
+// import { CoursesService } from '../../courses/courses.service';
+// import { CourseDetails } from '../../courses/course-details.model';
 
 interface Breadcrumb {
   path: string;
@@ -25,7 +25,7 @@ export class SharedHeaderComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private coursesService: CoursesService,
+    // private coursesService: CoursesService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
@@ -35,7 +35,7 @@ export class SharedHeaderComponent implements OnInit {
         for (const child of this.activatedRoute.root.children) {
           this.breadcrumbs = child.snapshot.url
             .map((url: UrlSegment, index: number, urls: UrlSegment[]) => ({
-                path: urls.slice(0, index + 1).map(segment => segment.path).join('/'),
+                path: urls.length > 1 ? urls.slice(0, index + 1).map(segment => segment.path).join('/') : url.path,
                 name: url.path
               })
             );
@@ -44,7 +44,7 @@ export class SharedHeaderComponent implements OnInit {
   }
 
   computeRouteName(name: string): Observable<string> {
-    if (Number.isInteger(+name)) {
+    if (name && Number.isInteger(+name)) {
       return of(`Course ${name}`);
       // this.coursesService.getCourseById(name)
       //   .pipe(

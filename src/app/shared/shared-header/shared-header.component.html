@@ -7,16 +7,16 @@
             <span *ngFor="let item of breadcrumbs; let last = last;">
                 <a class="breadcrumb" *ngIf="!last" [routerLink]="item.path">{{item.name}}</a>
                 <span *ngIf="!last">&gt;</span>
-            </span>
-            <span class="breadcrumb">
-                {{computeRouteName(breadcrumbs[1]?.name) | async}}
+                <span class="breadcrumb" *ngIf="last">
+                    {{computeRouteName(item.name) | async}}
+                </span>
             </span>
         </div>
     </div>
     <div *ngIf="user$ | async as user">
         <div>{{user.name.first}} {{user.name.last}}</div>
         <div>
-            <div class="link" (click)="onLogoffClick()">logoff</div>
+            <a [routerLink]="['./login']" (click)="onLogoffClick()">logoff</a>
         </div>
     </div>
 </div>
