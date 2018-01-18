@@ -56,6 +56,7 @@ export class SharedHeaderComponent implements OnInit {
 
   public ngOnInit() {
     this.user$ = this.authService.getUserInfo();
+    this.authService.fetchUserInfo();
   }
 
   public onLogoffClick() {
