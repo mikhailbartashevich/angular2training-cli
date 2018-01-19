@@ -37,9 +37,10 @@ export class LoginPageComponent implements OnDestroy, OnInit {
     const pairs = this.authService.getYobitInfo().filter((pair: string) => pair.indexOf('_btc') > -1);
     console.log('all pairs: ' + pairs.length);
     const result: string[] = [];
-    for (let i = 0; i < pairs.length; i += 50) {
+    const chunkSize = 50;
+    for (let i = 0; i < pairs.length; i += chunkSize) {
       setTimeout(() => {
-        const index = i + 50;
+        const index = i + chunkSize;
         const chunk = pairs.slice(i, index >= pairs.length ? pairs.length - 1 : index);
         this.authService.getYobitTicker(chunk.join('-'))
           .subscribe((tickers: any) => {
