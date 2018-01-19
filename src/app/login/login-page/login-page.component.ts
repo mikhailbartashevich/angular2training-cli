@@ -34,16 +34,24 @@ export class LoginPageComponent implements OnDestroy, OnInit {
       //   switchMap((pairs: string) => this.authService.getYobitTicker(pairs)),
       // )
   public ngOnInit() {
-    const pairs = this.authService.getYobitInfo().slice(0, 50);
-    this.authService.getYobitTicker(pairs.join('-'))
-      .subscribe((tickers: any) => {
-        for (const pair of pairs) {
-          const ticker: YobitTicker = tickers[pair];
-          if (ticker.low / ticker.high > 0.1 && ticker.vol > 2) {
-            console.log(pair);
-          }
-        }
-      });
+    const pairs = this.authService.getYobitInfo();
+    for (let i = 0; i < pairs.length; i += 50) {
+      setTimeout(() => {
+        const index = i + 50;
+        const chunk = pairs.slice(i, index >= pairs.length ? pairs.length - 1 : index);
+        this.authService.getYobitTicker(chunk.join('-'))
+          .subscribe((tickers: any) => {
+            for (const pair of pairs) {
+              const ticker: YobitTicker = tickers[pair];
+              if (ticker) {
+                if (ticker.low / ticker.high > 0.1 && ticker.vol > 2) {
+                  console.log(pair);
+                }
+              }
+            }
+          });
+      }, 20000);
+    }
   }
 
   public onFormSubmit() {
