@@ -48,7 +48,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
               const ticker: YobitTicker = tickers[pair];
               if (ticker) {
                 const ratio = ticker.low / ticker.high;
-                if (ratio > 0.3 && ratio < 0.5 && ticker.vol > 2) {
+                if (ratio > 0.2 && ratio < 0.4 && ticker.vol > 0.5 && ticker.vol < 3) {
                   result.push(pair);
                   console.log('selected: ' + result.length + ' ' + result.sort());
                 }

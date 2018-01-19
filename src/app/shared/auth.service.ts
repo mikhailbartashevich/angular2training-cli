@@ -86,7 +86,7 @@ export class AuthService {
   }
 
   public getYobitTicker(pair: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrlYobit}/ticker/${pair}`);
+    return this.http.get<any>(`${this.baseUrlYobit}/ticker/${pair}?ignore_invalid=1`);
   }
 
   public login(user: User): Observable<Object> {
