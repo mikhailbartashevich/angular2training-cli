@@ -50,12 +50,9 @@ export class LoginPageComponent implements OnDestroy, OnInit {
                 const ratio = ticker.low / ticker.high;
                 if (ratio > 0.3 && ratio < 0.5 && ticker.vol > 2) {
                   result.push(pair);
-                  console.log('selected: ' + result.length + ' ' + result);
+                  console.log('selected: ' + result.length + ' ' + result.sort());
                 }
               }
-            }
-            if (index >= pairs.length) {
-              console.log('done!');
             }
           });
       }, 20000);
