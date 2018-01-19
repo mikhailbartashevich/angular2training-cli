@@ -34,7 +34,9 @@ export class LoginPageComponent implements OnDestroy, OnInit {
       //   switchMap((pairs: string) => this.authService.getYobitTicker(pairs)),
       // )
   public ngOnInit() {
-    const pairs = this.authService.getYobitInfo();
+    const pairs = this.authService.getYobitInfo().filter((pair: string) => pair.indexOf('_btc') > -1);
+    console.log('all pairs: ' + pairs.length);
+    const result: string[] = [];
     for (let i = 0; i < pairs.length; i += 50) {
       setTimeout(() => {
         const index = i + 50;
@@ -44,10 +46,15 @@ export class LoginPageComponent implements OnDestroy, OnInit {
             for (const pair of pairs) {
               const ticker: YobitTicker = tickers[pair];
               if (ticker) {
-                if (ticker.low / ticker.high > 0.1 && ticker.vol > 2) {
-                  console.log(pair);
+                const ratio = ticker.low / ticker.high;
+                if (ratio > 0.3 && ratio < 0.5 && ticker.vol > 2) {
+                  result.push(pair);
+                  console.log('selected: ' + result.length + ' ' + result);
                 }
               }
+            }
+            if (index >= pairs.length) {
+              console.log('done!');
             }
           });
       }, 20000);

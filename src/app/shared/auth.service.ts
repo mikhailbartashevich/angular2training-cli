@@ -32,7 +32,7 @@ export class AuthService {
 
   private userInfo = new ReplaySubject<User>();
   private baseUrl = 'http://localhost:3004';
-  private baseUrlYobit = 'https://yobit.net/api/3';
+  private baseUrlYobit = 'https://yobit.io/api/3';
 
   constructor(private http: HttpClient) {}
 
