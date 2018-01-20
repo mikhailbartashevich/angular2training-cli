@@ -32,6 +32,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
   public user: User = new User('', '', new UserName('', ''));
   public subject: Subject<any> = new Subject();
   public stats: Statistics[] = [];
+  public popularStats: Statistics[] = [];
 
   constructor(
     private authService: AuthService,
@@ -65,6 +66,9 @@ export class LoginPageComponent implements OnDestroy, OnInit {
       )
       .subscribe((statistics: Statistics) => {
         this.stats.push(statistics);
+        if (statistics.buyRatio > 0.6) {
+          this.popularStats.push(statistics);
+        }
       });
   }
 

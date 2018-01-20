@@ -1,6 +1,6 @@
 <div class="container">
-  Statistics:
-  <div *ngFor="let statistics of stats">
+  60+% Statistics:
+  <div *ngFor="let statistics of popularStats">
     <div>
       {{statistics.pair}}
     </div>
@@ -13,6 +13,21 @@
   </div>
 </div>
 
+<div class="container">
+  All Statistics:
+  <div *ngFor="let statistics of stats">
+    <div>
+      {{statistics.pair}}
+    </div>
+    <div>
+      {{statistics.buyRatio}}
+    </div>
+    <div>
+      <a href="{{statistics.link}}">{{statistics.link}}</a>
+    </div>
+  </div>
+</div>
+<!-- 
 <div class="container">
   <div class="login-form">
     <form #form="ngForm" (submit)="onFormSubmit(form)">
@@ -52,4 +67,4 @@
       </fieldset>
     </form>
   </div>
-</div>
+</div> -->
