@@ -87,7 +87,6 @@ export class LoginPageComponent implements OnDestroy, OnInit {
             const ratio = ticker.low / ticker.high;
             if (ratio > 0.2 && ratio < 0.4 && ticker.vol > 0.5 && ticker.vol < 7) {
               adminPairs.push(pair);
-              console.log('selected: ' + adminPairs.sort());
               const display = pair.toUpperCase().split('_').join('/');
               console.log(`https://yobit.io/en/trade/${display}`);
             }
