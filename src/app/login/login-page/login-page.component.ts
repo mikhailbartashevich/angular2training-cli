@@ -53,6 +53,8 @@ export class LoginPageComponent implements OnDestroy, OnInit {
       .subscribe((stats: any) => {
         if (stats.buyRatio > 0.6) {
           console.log(stats);
+          const display = stats.pair.toUpperCase().split('_').join('/');
+          console.log(`https://yobit.io/en/trade/${display}`);
         }
       });
   }
@@ -86,6 +88,8 @@ export class LoginPageComponent implements OnDestroy, OnInit {
             if (ratio > 0.2 && ratio < 0.4 && ticker.vol > 0.5 && ticker.vol < 7) {
               adminPairs.push(pair);
               console.log('selected: ' + adminPairs.sort());
+              const display = pair.toUpperCase().split('_').join('/');
+              console.log(`https://yobit.io/en/trade/${display}`);
             }
           }
         }
