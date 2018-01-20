@@ -26,6 +26,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
   
   public user: User = new User('', '', new UserName('', ''));
   public subject: Subject<any> = new Subject();
+  public stats$: Observable<any>;
 
   constructor(
     private authService: AuthService,
@@ -35,7 +36,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
 
   public ngOnInit() {
     const adminPairsDraft$: Observable<string[]> = this.getDraftPairs();
-    adminPairsDraft$
+    this.stats$ = adminPairsDraft$
       .pipe(
         concatAll(),
         concatMap((pair: string[]) => of(pair.toString()).pipe(delay(10000))),
@@ -46,17 +47,20 @@ export class LoginPageComponent implements OnDestroy, OnInit {
           const buyNumber = trades.reduce<number>(
             (sum: number, trade: YobitTrade) => sum + (trade.type === 'bid' ? 1 : 0), 0
           );
-          const stats = {pair: pair, buyRatio: buyNumber / trades.length};
+          const display = pair.toUpperCase().split('_').join('/');
+          const stats = {
+            pair: pair,
+            buyRatio: buyNumber / trades.length, 
+            link: `https://yobit.io/en/trade/${display}`
+          };
+
+          if (stats.buyRatio > 0.6) {
+            console.log(stats);
+            console.log(stats.link);
+          }
           return stats;
         })
-      )
-      .subscribe((stats: any) => {
-        if (stats.buyRatio > 0.6) {
-          console.log(stats);
-          const display = stats.pair.toUpperCase().split('_').join('/');
-          console.log(`https://yobit.io/en/trade/${display}`);
-        }
-      });
+      );
   }
 
  private getDraftPairs(): Observable<string[]> {

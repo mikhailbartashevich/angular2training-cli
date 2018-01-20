@@ -1,4 +1,19 @@
 <div class="container">
+  Stats:
+  <div *ngIf="stats$ | async as stats">
+    <div>
+      {{stats.pair}}
+    </div>
+    <div>
+      {{stats.buyRatio}}
+    </div>
+    <div>
+      <a href="{{stats.link}}">{{stats.link}}</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
   <div class="login-form">
     <form #form="ngForm" (submit)="onFormSubmit(form)">
       <fieldset>
