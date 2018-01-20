@@ -1,6 +1,6 @@
 <div class="container">
   Statistics:
-  <div *ngFor="let statistics of stats">
+  <div *ngFor="let statistics of stats | orderBy 'buyRatio'">
     <div>
       {{statistics.pair}}
     </div>
