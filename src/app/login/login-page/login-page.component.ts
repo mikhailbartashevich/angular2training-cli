@@ -6,7 +6,14 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
-// import { switchMap } from 'rxjs/operators/switchMap';
+import { filter } from 'rxjs/operators/filter';
+import { toArray } from 'rxjs/operators/toArray';
+import { map } from 'rxjs/operators/map';
+import { concatAll } from 'rxjs/operators/concatAll';
+import { concatMap } from 'rxjs/operators/concatMap';
+import { of } from 'rxjs/observable/of';
+import { delay } from 'rxjs/operators/delay';
+import { switchMap } from 'rxjs/operators/switchMap';
 
 @Component({
   selector: 'app-login-page',
@@ -24,39 +31,42 @@ export class LoginPageComponent implements OnDestroy, OnInit {
     private router: Router
   ) {}
 
-       // .pipe(
-      //   map(
-      //     (info: YobitInfo) => Object.keys(info.pairs)
-      //       .filter((pair: string) => pair.indexOf('_btc') > -1)
-      //       .slice(0, 20)
-      //       .join('-')
-      //     ),
-      //   switchMap((pairs: string) => this.authService.getYobitTicker(pairs)),
-      // )
   public ngOnInit() {
-    const pairs = this.authService.getYobitInfo().filter((pair: string) => pair.indexOf('_btc') > -1);
-    console.log('all pairs: ' + pairs.length);
-    const result: string[] = [];
-    const chunkSize = 50;
-    for (let i = 0; i < pairs.length; i += chunkSize) {
-      setTimeout(() => {
-        const index = i + chunkSize;
-        const chunk = pairs.slice(i, index >= pairs.length ? pairs.length - 1 : index);
-        this.authService.getYobitTicker(chunk.join('-'))
-          .subscribe((tickers: any) => {
-            for (const pair of pairs) {
-              const ticker: YobitTicker = tickers[pair];
-              if (ticker) {
-                const ratio = ticker.low / ticker.high;
-                if (ratio > 0.2 && ratio < 0.4 && ticker.vol > 0.5 && ticker.vol < 3) {
-                  result.push(pair);
-                  console.log('selected: ' + result.length + ' ' + result.sort());
-                }
-              }
+    const adminPairs: string[] = [];
+
+    this.authService.getYobitInfo()
+      .pipe(
+        concatAll(),
+        filter((pair: string) => pair.indexOf('_btc') > -1),
+        toArray(),
+        map((filteredPairs: string[]) => {
+          const chunkSize = 50;
+          const result = [];
+          for (let i = 0, index = chunkSize; i < filteredPairs.length; i += chunkSize, index = i + chunkSize) {
+            const endIndex = index >= filteredPairs.length ? filteredPairs.length - 1: index;
+            const chunk = filteredPairs.slice(i, endIndex);
+            result.push(chunk.join('-'));
+          }
+          return result;
+        }),
+        concatAll(),
+        concatMap((chunk: string[]) => of(chunk.toString()).pipe(delay(5000))),
+        switchMap((chunk: string) => this.authService.getYobitTicker(chunk))
+      ).subscribe((tickersObject: any) => {
+
+        const pairs = Object.keys(tickersObject);
+        for(const pair of pairs) {
+          const ticker: YobitTicker = tickersObject[pair];
+          if (ticker) {
+            const ratio = ticker.low / ticker.high;
+            if (ratio > 0.2 && ratio < 0.4 && ticker.vol > 0.5 && ticker.vol < 3) {
+              adminPairs.push(pair);
+              console.log('selected: ' + adminPairs.length + ' ' + adminPairs.sort());
             }
-          });
-      }, 20000);
-    }
+          }
+        }
+        
+      });
   }
 
   public onFormSubmit() {

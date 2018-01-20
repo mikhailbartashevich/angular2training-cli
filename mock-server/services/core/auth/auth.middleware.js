@@ -34,5 +34,10 @@ module.exports = (server) => {
 		}
 	});
 
+	router.get('/auth/pairs', (req, res, next) => {
+		let pairs = server.db.get('pairs').value();
+		res.json(pairs);
+	});
+
 	return router;
 };
