@@ -64,7 +64,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
       filter((pair: string) => pair.indexOf('_btc') > -1),
       toArray(),
       map((filteredPairs: string[]) => {
-        const chunkSize = 50;
+        const chunkSize = 25;
         const result = [];
         for (let i = 0, index = chunkSize; i < filteredPairs.length; i += chunkSize, index = i + chunkSize) {
           const endIndex = index >= filteredPairs.length ? filteredPairs.length - 1: index;
