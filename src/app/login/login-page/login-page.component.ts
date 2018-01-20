@@ -16,17 +16,22 @@ import { delay } from 'rxjs/operators/delay';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { Observable } from 'rxjs/Observable';
 
+interface Statistics {
+  pair: string;
+  buyRatio: number;
+  link: string;
+}
+
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent implements OnDestroy, OnInit {
   
   public user: User = new User('', '', new UserName('', ''));
   public subject: Subject<any> = new Subject();
-  public stats$: Observable<any>;
+  public stats: Statistics[] = [];
 
   constructor(
     private authService: AuthService,
@@ -36,7 +41,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
 
   public ngOnInit() {
     const adminPairsDraft$: Observable<string[]> = this.getDraftPairs();
-    this.stats$ = adminPairsDraft$
+    adminPairsDraft$
       .pipe(
         concatAll(),
         concatMap((pair: string[]) => of(pair.toString()).pipe(delay(10000))),
@@ -53,14 +58,14 @@ export class LoginPageComponent implements OnDestroy, OnInit {
             buyRatio: buyNumber / trades.length, 
             link: `https://yobit.io/en/trade/${display}`
           };
-
-          if (stats.buyRatio > 0.6) {
-            console.log(stats);
-            console.log(stats.link);
-          }
+          console.log(stats);
+          console.log(stats.link);
           return stats;
         })
-      );
+      )
+      .subscribe((statistics: Statistics) => {
+        this.stats.push(statistics);
+      });
   }
 
  private getDraftPairs(): Observable<string[]> {

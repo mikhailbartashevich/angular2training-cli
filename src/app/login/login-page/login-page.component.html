@@ -1,14 +1,14 @@
 <div class="container">
-  Stats:
-  <div *ngIf="stats$ | async as stats">
+  Statistics:
+  <div *ngFor="let statistics of stats">
     <div>
-      {{stats.pair}}
+      {{statistics.pair}}
     </div>
     <div>
-      {{stats.buyRatio}}
+      {{statistics.buyRatio}}
     </div>
     <div>
-      <a href="{{stats.link}}">{{stats.link}}</a>
+      <a href="{{statistics.link}}">{{statistics.link}}</a>
     </div>
   </div>
 </div>
