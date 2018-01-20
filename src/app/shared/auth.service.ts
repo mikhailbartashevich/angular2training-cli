@@ -27,6 +27,13 @@ export interface YobitTicker {
   last: number;
 }
 
+export interface YobitTrade {
+  type: string; // "bid", "ask"
+  price: number,
+  amount: number;
+  timestamp: number;
+}
+
 @Injectable()
 export class AuthService {
 
@@ -40,8 +47,12 @@ export class AuthService {
     return this.http.get<any>(`${this.baseUrl}/auth/pairs`);;
   }
 
-  public getYobitTicker(pair: string): Observable<string[]> {
-    return this.http.get<string[]>(`${this.baseUrlYobit}/ticker/${pair}?ignore_invalid=1`);
+  public getYobitTicker(pair: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrlYobit}/ticker/${pair}?ignore_invalid=1`);
+  }
+
+  public getYobitTrades(pair: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrlYobit}/trades/${pair}?ignore_invalid=1`);
   }
 
   public login(user: User): Observable<Object> {
