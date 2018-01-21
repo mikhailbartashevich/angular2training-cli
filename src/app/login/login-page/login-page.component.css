@@ -46,3 +46,7 @@ app-shared-header {
 form.ng-invalid.ng-dirty {
   border: none;
 }
+
+.stats {
+  margin: 20px;
+}

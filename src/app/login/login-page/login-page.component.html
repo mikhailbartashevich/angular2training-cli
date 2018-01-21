@@ -1,14 +1,19 @@
 <div class="container">
   60+% Statistics:
   <div *ngFor="let statistics of popularStats">
-    <div>
-      {{statistics.pair}}
-    </div>
-    <div>
-      {{statistics.buyRatio}}
-    </div>
-    <div>
-      <a href="{{statistics.link}}">{{statistics.link}}</a>
+    <div class="stats">
+      <div>
+        {{statistics.pair}}
+      </div>
+      <div>
+        {{statistics.lastTrade}}
+      </div>
+      <div>
+        {{statistics.buyRatio}}
+      </div>
+      <div>
+        <a href="{{statistics.link}}" target="_blank">{{statistics.link}}</a>
+      </div>
     </div>
   </div>
 </div>
@@ -16,14 +21,19 @@
 <div class="container">
   All Statistics:
   <div *ngFor="let statistics of stats">
-    <div>
-      {{statistics.pair}}
-    </div>
-    <div>
-      {{statistics.buyRatio}}
-    </div>
-    <div>
-      <a href="{{statistics.link}}">{{statistics.link}}</a>
+    <div class="stats">
+      <div>
+        {{statistics.pair}}
+      </div>
+      <div>
+        {{statistics.lastTrade}}
+      </div>
+      <div>
+        {{statistics.buyRatio}}
+      </div>
+      <div>
+        <a href="{{statistics.link}}" target="_blank">{{statistics.link}}</a>
+      </div>
     </div>
   </div>
 </div>
