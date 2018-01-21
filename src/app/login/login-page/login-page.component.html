@@ -1,5 +1,6 @@
 <div class="container">
-  60+% Statistics {{popularStats.length}}:
+  <span>60+% Statistics {{popularStats.length}}:</span>
+  <input type="button" value="Refresh" (click)="onRefreshClick()"/>
   <div *ngFor="let statistics of popularStats">
     <div class="stats">
       <div>
