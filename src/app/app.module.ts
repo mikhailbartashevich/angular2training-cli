@@ -10,7 +10,6 @@ import { LoginPageComponent } from './login/login-page/login-page.component';
 import { CoursesPageComponent } from './courses/courses-page/courses-page.component';
 import { CoursePageComponent } from './courses/course-page/course-page.component';
 import { SharedModule } from './shared/shared.module';
-import { NotFoundPageComponent } from './shared/not-found-page/not-found-page.component';
 import { AuthGuard } from './shared/auth.guard';
 
 const Routes = [
@@ -19,7 +18,7 @@ const Routes = [
   {path: 'courses/new', component: CoursePageComponent, canActivate: [AuthGuard]},
   {path: 'courses/:id', component: CoursePageComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginPageComponent},
-  {path: '**', component: NotFoundPageComponent},
+  {path: '**', component: LoginPageComponent},
 ];
 
 @NgModule({
