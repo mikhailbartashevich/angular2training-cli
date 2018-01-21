@@ -44,42 +44,46 @@ export class LoginPageComponent implements OnDestroy, OnInit {
 
   public ngOnInit() {
     const adminPairsDraft$: Observable<string[]> = this.getDraftPairs();
-    adminPairsDraft$
-      .pipe(
-        concatAll(),
-        concatMap((pair: string[]) => of(pair.toString()).pipe(delay(10000))),
-        switchMap((pair: string) => this.authService.getYobitTrades(pair)),
-        retry(2),
-        map((pairTrade: any) => {
-          const pair = Object.keys(pairTrade)[0];
-          const trades: YobitTrade[] = pairTrade[pair];
-          trades.sort((trade: YobitTrade, trade1: YobitTrade) => trade1.timestamp - trade.timestamp);
-          const buyNumber = trades.reduce<number>(
-            (sum: number, trade: YobitTrade) => sum + (trade.type === 'bid' ? 1 : 0), 0
-          );
-          const date = new Date(0);
-          date.setSeconds(trades[0].timestamp);
-          const display = pair.toUpperCase().split('_').join('/');
-          const stats = {
-            pair: pair,
-            buyRatio: +Number(buyNumber / trades.length).toFixed(2),
-            lastTrade: date, 
-            link: `https://yobit.io/en/trade/${display}`
-          };
-          console.log(stats);
-          console.log(stats.link);
-          return stats;
-        })
-      )
-      .subscribe((statistics: Statistics) => {
-        this.stats.push(statistics);
-        if (statistics.buyRatio > 0.6) {
-          this.popularStats.push(statistics);
-        }
-        this.stats.sort((stat: Statistics, stat1: Statistics) => stat.lastTrade < stat1.lastTrade ? 1 : -1);
-        this.popularStats.sort((stat: Statistics, stat1: Statistics) => stat.lastTrade < stat1.lastTrade ? 1 : -1);
-      });
+    const statistics$: Observable<Statistics> = this.getStatistics(adminPairsDraft$);
+    statistics$.subscribe((statistics: Statistics) => {
+      this.stats.push(statistics);
+      if (statistics.buyRatio > 0.6) {
+        this.popularStats.push(statistics);
+      }
+      this.stats.sort((stat: Statistics, stat1: Statistics) => stat.lastTrade < stat1.lastTrade ? 1 : -1);
+      this.popularStats.sort((stat: Statistics, stat1: Statistics) => stat.lastTrade < stat1.lastTrade ? 1 : -1);
+    });
   }
+
+private getStatistics(adminPairsDraft$: Observable<string[]>) {
+  return adminPairsDraft$
+    .pipe(
+      concatAll(),
+      concatMap((pair: string[]) => of(pair.toString()).pipe(delay(10000))),
+      switchMap((pair: string) => this.authService.getYobitTrades(pair)),
+      retry(2),
+      map((pairTrade: any) => {
+        const pair = Object.keys(pairTrade)[0];
+        const trades: YobitTrade[] = pairTrade[pair];
+        trades.sort((trade: YobitTrade, trade1: YobitTrade) => trade1.timestamp - trade.timestamp);
+        const buyNumber = trades.reduce<number>(
+          (sum: number, trade: YobitTrade) => sum + (trade.type === 'bid' ? 1 : 0), 0
+        );
+        const date = new Date(0);
+        date.setSeconds(trades[0].timestamp);
+        const display = pair.toUpperCase().split('_').join('/');
+        const stats = {
+          pair: pair,
+          buyRatio: +Number(buyNumber / trades.length).toFixed(2),
+          lastTrade: date, 
+          link: `https://yobit.io/en/trade/${display}`
+        };
+        console.log(stats);
+        console.log(stats.link);
+        return stats;
+      })
+    );
+}
 
  private getDraftPairs(): Observable<string[]> {
   return this.authService.getYobitInfo()
