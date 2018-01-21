@@ -50,6 +50,12 @@ export class LoginPageComponent implements OnDestroy, OnInit {
       if (statistics.buyRatio > 0.6) {
         this.popularStats.push(statistics);
       }
+
+      this.stats = this.stats.filter(
+        (item, pos) => this.stats.findIndex(it => it.pair === item.pair) === pos);
+      this.popularStats = this.popularStats.filter(
+        (item, pos) => this.popularStats.findIndex(it => it.pair === item.pair) === pos);
+
       this.stats.sort((stat: Statistics, stat1: Statistics) => stat.lastTrade < stat1.lastTrade ? 1 : -1);
       this.popularStats.sort((stat: Statistics, stat1: Statistics) => stat.lastTrade < stat1.lastTrade ? 1 : -1);
     });
