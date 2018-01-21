@@ -108,7 +108,7 @@ private getStatistics(adminPairsDraft$: Observable<string[]>) {
         return result;
       }),
       concatAll(),
-      concatMap((chunk: string[]) => of(chunk.toString()).pipe(delay(7000))),
+      concatMap((chunk: string[]) => of(chunk.toString()).pipe(delay(10000))),
       switchMap((chunk: string) => this.authService.getYobitTicker(chunk)),
       map((tickersObject: any) => {
         const adminPairs: string[] = [];
