@@ -15,6 +15,7 @@ import { of } from 'rxjs/observable/of';
 import { delay } from 'rxjs/operators/delay';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { Observable } from 'rxjs/Observable';
+import { retry } from 'rxjs/operators/retry';
 
 interface Statistics {
   pair: string;
@@ -46,8 +47,9 @@ export class LoginPageComponent implements OnDestroy, OnInit {
     adminPairsDraft$
       .pipe(
         concatAll(),
-        concatMap((pair: string[]) => of(pair.toString()).pipe(delay(5000))),
+        concatMap((pair: string[]) => of(pair.toString()).pipe(delay(10000))),
         switchMap((pair: string) => this.authService.getYobitTrades(pair)),
+        retry(2),
         map((pairTrade: any) => {
           const pair = Object.keys(pairTrade)[0];
           const trades: YobitTrade[] = pairTrade[pair];
