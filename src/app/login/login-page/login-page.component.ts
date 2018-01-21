@@ -56,6 +56,9 @@ export class LoginPageComponent implements OnDestroy, OnInit {
   }
 
   private refresh() {
+    this.stats = [];
+    this.popularStats = [];
+    
     this.statistics$
       .subscribe((statistics: Statistics) => {
         this.stats.push(statistics);
