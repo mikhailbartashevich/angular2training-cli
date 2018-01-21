@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { User, UserName } from './user.model';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators/map';
 
 interface ServerUserName {
   first: string;
@@ -44,7 +45,10 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   public getYobitInfo(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/auth/pairs`);;
+    return this.http.get<any>(`${this.baseUrlYobit}/info`)
+      .pipe(
+        map((info: any) => Object.keys(info.pairs))
+      );
   }
 
   public getYobitTicker(pair: string): Observable<any> {
