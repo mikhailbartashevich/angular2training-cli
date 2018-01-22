@@ -30,7 +30,7 @@ interface Statistics {
   styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent implements OnDestroy, OnInit {
-  
+
   public user: User = new User('', '', new UserName('', ''));
   public subject: Subject<any> = new Subject();
   public stats: Statistics[] = [];
@@ -46,7 +46,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
   public ngOnInit() {
     const adminPairsDraft$: Observable<string[]> = this.getDraftPairs();
     this.statistics$ = this.getStatistics(adminPairsDraft$);
-    this.refresh();
+    // this.refresh();
   }
 
   public onRefreshClick() {
@@ -58,7 +58,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
   private refresh() {
     this.stats = [];
     this.popularStats = [];
-    
+
     this.statistics$
       .subscribe((statistics: Statistics) => {
         this.stats.push(statistics);
@@ -97,7 +97,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
           const stats = {
             pair: pair,
             buyRatio: +Number(buyNumber / trades.length).toFixed(2),
-            lastTrade: date, 
+            lastTrade: date,
             link: `https://yobit.io/en/trade/${display}`
           };
           console.log(stats);
@@ -118,7 +118,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
         const chunkSize = 50;
         const result = [];
         for (let i = 0, index = chunkSize; i < filteredPairs.length; i += chunkSize, index = i + chunkSize) {
-          const endIndex = index >= filteredPairs.length ? filteredPairs.length - 1: index;
+          const endIndex = index >= filteredPairs.length ? filteredPairs.length - 1 : index;
           const chunk = filteredPairs.slice(i, endIndex);
           result.push(chunk.join('-'));
         }
@@ -130,7 +130,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
       map((tickersObject: any) => {
         const adminPairs: string[] = [];
         const pairs = Object.keys(tickersObject);
-        for(const pair of pairs) {
+        for (const pair of pairs) {
           const ticker: YobitTicker = tickersObject[pair];
           if (ticker) {
             const ratio = ticker.low / ticker.high;
